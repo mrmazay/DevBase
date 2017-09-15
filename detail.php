@@ -254,7 +254,7 @@ while ($row = $result->fetch_assoc()) {
 									</div>
 								</div>	
 							</form>
-							<!-- *************************************************************** -->
+<!-- *************************************************************** -->
 						</div><!-- panel body -->
 					</div><!-- panel -->
 				</div><!-- col-md-6 -->
@@ -472,7 +472,15 @@ while ($row = $result->fetch_assoc()) {
 			<div class="form-group">
 				<label for="Description" class="col-lg-2 control-label">Описание</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="Description" id="Description" placeholder="Description" value="Метрологическая аттестация">
+				<div class="select-editable">
+            <select onchange="this.nextElementSibling.value=this.value">
+                <option value=""></option>
+                <option value="115x175 mm">115x175 mm</option>
+                <option value="120x160 mm">120x160 mm</option>
+                <option value="120x287 mm">120x287 mm</option>
+            </select>
+ <input type="Text" class="form-control" name="Description" id="Description" placeholder="Description" value="Метрологическая аттестация">
+</div>
 				</div>
 				<div class="col-lg-2">
 
@@ -577,6 +585,9 @@ while ($row = $result->fetch_assoc()) {
 
 <script type="text/javascript">
 
+
+//*****************Add & Remove Package*******************************
+
 	$("#add_pkg").click(function(e){ 
 		$.post( "get_main.php?q=add_pkg", $( "#pkg_frm" ).serialize())
 		.done(function( data ) {
@@ -597,7 +608,7 @@ while ($row = $result->fetch_assoc()) {
 		});
 	});
 
-
+//*****************Add & Remove Character*******************************
 	$("#add_char").click(function(e){ 
 		$.post( "get_main.php?q=add_char", $( "#char_frm" ).serialize())
 		.done(function( data ) {
@@ -617,7 +628,7 @@ while ($row = $result->fetch_assoc()) {
 		});
 	});
         
-        
+   //*****************Add & Remove Pov*******************************
         
 	});
 	$("#add_pov").click(function(e){ 
@@ -628,6 +639,9 @@ while ($row = $result->fetch_assoc()) {
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
 	});
+
+
+//*****************Add & Remove Service *******************************
 	$("#add_serv").click(function(e){ 
 		$.post( "get_main.php?q=add_serv", $( "#serv_frm" ).serialize())
 		.done(function( data ) {
