@@ -295,7 +295,7 @@ WHERE pov.NextPov <= CURDATE() + INTERVAL 2 month";
 			'IsMeasure'=> $row['IsMeasure'],
 			'NextPov'=> $row['NextPov'],
 			'ManufactDate'=> $row['ManufactDate'],
-			'Action'=>'<a class="btn btn-primary btn-xs"  href=detail.php?SiId='.$row['SiId'].'>Detail</a><br><button class="btn btn-info btn-xs pov-btn" type="button" data-toggle="modal" data-target="#PovModal" id='.$row['SiId'].' siname="'.$row['Name'].'('.$row['SN'].')">Pov</button>'
+			'Action'=>'<a class="btn btn-primary btn-xs"  href=detail.php?SiId='.$row['SiId'].'>Detail</a><br><button class="btn btn-info btn-xs pov-btn" type="button" data-toggle="modal" data-target="#PovModal" id='.$row['SiId'].' siname="'.$row['Name'].'('.$row['SN'].')">Pov</button><button class="btn btn-info btn-xs srv-btn" type="button" data-toggle="modal" data-target="#SrvModal" id='.$row['SiId'].' siname="'.$row['Name'].'('.$row['SN'].')">Srv</button>'
         );	
  	 		 	 			//echo ($row[1]);	
 
