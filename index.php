@@ -76,7 +76,7 @@ require 'title.php';
 
 <div class="panel  panel-primary" id="pov-panel">
 						<div class="panel-heading ">
-							<span class="" id="tbl_title">Поверка/калибровка</span>
+							<span class="" id="pov_tbl_title">Поверка/калибровка</span>
 						</div><!-- panel-heading -->
 						<div class="panel-body">
 					<form enctype="multipart/form-data" class="form-horizontal" role="form" id="pov_frm"  method="POST" >
@@ -144,13 +144,13 @@ require 'title.php';
 </div>
 <div class="modal-body">
 
-<div class="panel  panel-primary" id="serv-panel">
+<div class="panel  panel-primary" id="srv-panel">
 						<div class="panel-heading "> 
-							<span class="" id="tbl_title">Обслуживание</span>  
+							<span class="" id="srv_tbl_title">Обслуживание</span>
 						</div><!-- panel-heading -->
 						<div class="panel-body">
-						<form class="form-horizontal" role="form" id="serv_frm"  method="POST" >
-			<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
+						<form class="form-horizontal" role="form" id="srv_frm"  method="POST" >
+			<input type="hidden" class="form-control" name="SiId" id="SiId" value="">
 			<div class="form-group">
 				<label for="SiId" class="col-lg-2 control-label">Дата</label>
 				<div class="col-lg-10">
@@ -192,21 +192,20 @@ require 'title.php';
 				
 			</div>
 		</form>
-		<div class="form-group">
+<!--		<div class="form-group">-->
 			<div class="col-lg-offset-2 col-lg-10">
-				<button  id="add_serv" class="btn btn-primary">Добавить</button>
+				<button  id="add_srv" class="btn btn-primary">Добавить</button>
 			</div>
-		</div>
+<!--		</div>-->
 		
 		<div class="table-responsive">
 			<table 
-			id="serv_tbl" 
-			class="table table-striped table-bordered table-condensed" 
-			data-url="get_main.php?q=get_serv&SiId=<?php echo $SiId?>"
-			data-method="POST"  
-			data-height="200" 
-			data-show-refresh="true" 
-			data-mobile-responsive="true" > 
+			id="srv_tbl"
+			class="table table-striped table-bordered table-condensed"
+				data-method="POST"
+				data-height="200"
+				data-show-refresh="true"
+				data-mobile-responsive="true" >
 			<thead>
 				<th data-field="id" data-sortable="true"> id</th>
 				<th data-field="ServDate" data-sortable="true">Дата</th>
@@ -273,13 +272,13 @@ $(document).ready(function(){
 });
 
 $("#pov_tbl").bootstrapTable({});
-
-
+$("#srv_tbl").bootstrapTable({});
+//*************************************************************************
 $("#table").on('click','.pov-btn',function(e){
 //		var $id = $(this).attr('value');
         var $SiId=$(this ).attr('id');
     $("#SiId").val($SiId);
-    $("#tbl_title").text($(this).attr('siname'));
+    $("#pov_tbl_title").text($(this).attr('siname'));
 		$.post( "get_main.php?q=get_pov&SiId="+$SiId, {SiId: $SiId})
 		.done(function( data ) {
 
@@ -297,7 +296,7 @@ $("#table").on('click','.pov-btn',function(e){
 		});
 	});
 
-
+//***********************Missed CLick****************************************************
     $("#missed").change(function(){
 		if ($('#missed').prop('checked')) {
 		$.post( "get_main.php?q=get_missed")
@@ -316,14 +315,31 @@ $("#table").on('click','.pov-btn',function(e){
 	//	return false;
 	});
 	});
+//**********************ServPopup***********************************************
+$("#table").on('click','.srv-btn',function(e){
+//		var $id = $(this).attr('value');
+        var $SiId=$(this ).attr('id');
+    $("#SiId").val($SiId);
+    $("#srv_tbl_title").text($(this).attr('siname'));
+		$.post( "get_main.php?q=get_serv&SiId="+$SiId, {SiId: $SiId})
+		.done(function( data ) {
+
+			var $table = $('#srv_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
+	});
+
+    $("#add_srv").click(function(e){
+		$.post( "get_main.php?q=add_pov", $( "#srv_frm" ).serialize())
+		.done(function( data ) {
+
+			var $table = $('#srv_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
+	});
 
 
 
-
-  //  $('#table').on('load-success.bs.table',function(){
-//  	     var $rowCount=$('#table').bootstrapTable('getOptions').totalRows;
-//         $('#count').text($rowCount+' записей.');
-//        });
 
 
 
