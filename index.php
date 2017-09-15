@@ -64,7 +64,7 @@ require 'title.php';
 		</div>
 
 
-<!--*********************************************************************************-->
+<!--*******************ModalPov******************************-->
 
 <div id="PovModal" class="modal fade">
 <div class="modal-dialog">
@@ -136,6 +136,104 @@ require 'title.php';
 </div><!-- class-modal-fade -->
 
 <!--***********************************************************************************-->
+<div id="SrvModal" class="modal fade">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
+<h4 class="modal-title">Обслуживание</h4>
+</div>
+<div class="modal-body">
+
+<div class="panel  panel-primary" id="serv-panel">
+						<div class="panel-heading "> 
+							<span class="" id="tbl_title">Обслуживание</span>  
+						</div><!-- panel-heading -->
+						<div class="panel-body">
+						<form class="form-horizontal" role="form" id="serv_frm"  method="POST" >
+			<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
+			<div class="form-group">
+				<label for="SiId" class="col-lg-2 control-label">Дата</label>
+				<div class="col-lg-10">
+					<input type="Text" class="form-control" name="ServDate" id="ServDate" placeholder="01.01.2014">
+				</div>
+				<div class="col-lg-2">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="ServType" class="col-lg-2 control-label">Вид</label>
+				<div class="col-lg-10">
+					<input type="Text" class="form-control" name="ServType" id="ServType" placeholder="ServType">
+				</div>
+				<div class="col-lg-2">
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="Description" class="col-lg-2 control-label">Описание</label>
+				<div class="col-lg-10">
+					<input type="Text" class="form-control" name="Description" id="Description" placeholder="Description" value="Метрологическая аттестация">
+				</div>
+				<div class="col-lg-2">
+
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="Executor" class="col-lg-2 control-label">Выполнил</label>
+				<div class="col-lg-10">
+					<input type="Text" class="form-control" name="Executor" id="Executor" placeholder="А.А. Леонов" value="А.А. Леонов">
+				</div>
+				
+			</div>
+			<div class="form-group">
+				<label for="NextDate" class="col-lg-2 control-label">Дата следующего</label>
+				<div class="col-lg-10">
+					<input type="Text" class="form-control" name="NextDate" id="NextDate" placeholder="01.01.2014">
+				</div>
+				
+			</div>
+		</form>
+		<div class="form-group">
+			<div class="col-lg-offset-2 col-lg-10">
+				<button  id="add_serv" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+		
+		<div class="table-responsive">
+			<table 
+			id="serv_tbl" 
+			class="table table-striped table-bordered table-condensed" 
+			data-url="get_main.php?q=get_serv&SiId=<?php echo $SiId?>"
+			data-method="POST"  
+			data-height="200" 
+			data-show-refresh="true" 
+			data-mobile-responsive="true" > 
+			<thead>
+				<th data-field="id" data-sortable="true"> id</th>
+				<th data-field="ServDate" data-sortable="true">Дата</th>
+				<th data-field="ServType" data-sortable="true">Вид</th>
+				<th data-field="Description" data-sortable="true">Описание</th>
+				<th data-field="Executor" data-sortable="true">Выполнил</th>
+				<th data-field="NextDate" data-sortable="true">Дата след.</th>
+				<th data-field="Action">Action</th>
+			</thead>
+			
+		</table>
+	</div>
+
+
+						</div><!-- panel body -->
+					</div><!-- panel -->
+    
+    
+    </div><!-- modal-body -->
+<div class="modal-footer">
+<button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button>
+</div><!-- modal-footer -->
+</div><!-- modal-contenet -->
+</div><!-- modal-dialog -->
+</div><!-- class-modal-fade -->
+<!--        ***********************************************************-->
+        
 </div><!-- Col-md-12 -->
 		</div><!-- Container-fluid -->
 
