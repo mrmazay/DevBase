@@ -469,18 +469,24 @@ while ($row = $result->fetch_assoc()) {
 
 				</div>
 			</div>
-			<div class="form-group">
+            <div class="form-group">
 				<label for="Description" class="col-lg-2 control-label">Описание</label>
 				<div class="col-lg-10">
+<!--
 				<div class="select-editable">
             <select onchange="this.nextElementSibling.value=this.value">
-                <option value=""></option>
-                <option value="115x175 mm">115x175 mm</option>
-                <option value="120x160 mm">120x160 mm</option>
-                <option value="120x287 mm">120x287 mm</option>
+--><input list="Descriptions" name="Description">
+                    <datalist id="Desccriptions">
+                <option value="Чистка. Проверка тех. сост.">
+                <option value="Метрологическая аттестация">
+                <option value="Чистка. Калибровка.">
+                <option value="Квалификация">
+                    </datalist>
+<!--
             </select>
- <input type="Text" class="form-control" name="Description" id="Description" placeholder="Description" value="Метрологическая аттестация">
-</div>
+            <input type="Text" class="form-control" name="Description" id="Description" placeholder="Description" value="Чистка. Проверка тех. сост.">
+-->
+<!--                </div>-->
 				</div>
 				<div class="col-lg-2">
 
