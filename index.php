@@ -150,7 +150,7 @@ require 'title.php';
 						</div><!-- panel-heading -->
 						<div class="panel-body">
 						<form class="form-horizontal" role="form" id="srv_frm"  method="POST" >
-			<input type="hidden" class="form-control" name="SiId" id="SiId" value="">
+			<input type="hidden" class="form-control" name="SiId" id="SrvSiId" value="">
 			<div class="form-group">
 				<label for="SiId" class="col-lg-2 control-label">Дата</label>
 				<div class="col-lg-10">
@@ -319,7 +319,7 @@ $("#table").on('click','.pov-btn',function(e){
 $("#table").on('click','.srv-btn',function(e){
 //		var $id = $(this).attr('value');
         var $SiId=$(this ).attr('id');
-    $("#SiId").val($SiId);
+    $("#SrvSiId").val($SiId);
     $("#srv_tbl_title").text($(this).attr('siname'));
 		$.post( "get_main.php?q=get_serv&SiId="+$SiId, {SiId: $SiId})
 		.done(function( data ) {
@@ -330,7 +330,7 @@ $("#table").on('click','.srv-btn',function(e){
 	});
 
     $("#add_srv").click(function(e){
-		$.post( "get_main.php?q=add_pov", $( "#srv_frm" ).serialize())
+		$.post( "get_main.php?q=add_serv", $( "#srv_frm" ).serialize())
 		.done(function( data ) {
 
 			var $table = $('#srv_tbl');
