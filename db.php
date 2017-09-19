@@ -1,6 +1,7 @@
 <?php
 //~ Старт сессии, файл должен быть сохранен без DOM информации
 session_start();
+$_SESSION['user']='qweqwe';
 $user="mysql";
 $pass="mysql";
 $database="DevBase";

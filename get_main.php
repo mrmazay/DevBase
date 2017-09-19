@@ -1,6 +1,12 @@
 <?php 
 require 'db.php';
 
+if ($_GET['q']=='auth'){
+$login= $_POST['login'];
+$pass=  $_POST['password'];
+
+}
+
 $arrVal = array();
 if ($_GET['q']=='get_main'){
 	$sql="SELECT SI.SiId, 
