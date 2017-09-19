@@ -255,9 +255,9 @@ require 'title.php';
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $('#target-div1').JSAjaxFileUploader({
-        uploadUrl:'upload.php'
-    });
+//    $('#target-div1').JSAjaxFileUploader({
+//        uploadUrl:'upload.php'
+//    });
 
     $('#table').bootstrapTable({
     onLoadSuccess: function (e,data) {
