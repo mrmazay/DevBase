@@ -58,6 +58,7 @@ while ($row = $result->fetch_assoc()) {
 
 }
 ?>
+
 <div class="container-fluid">
 	<div class="col-md-12">
 		<div class="page-header">
@@ -404,11 +405,30 @@ while ($row = $result->fetch_assoc()) {
 					<label for="file" class="col-lg-2 control-label">Скан</label>
 					<div class="col-lg-3">
 
+<!--
 						<div class="file_upload">
 							<button type="button">Выбрать</button>
 							<div>Файл не выбран</div>
 							<input type="file">
 						</div>
+-->                 <span class="btn btn-primary fileinput-button">
+        <i class="glyphicon glyphicon-plus"></i>
+        <span>Select files...</span>
+        <!-- The file input field used as target for the file upload widget -->
+        <input id="fileupload" type="file" name="files[]" multiple>
+    </span>
+<!--
+    <br>
+    <br>
+-->
+    <!-- The global progress bar -->
+<!--
+    <div id="progress" class="progress">
+        <div class="progress-bar progress-bar-success"></div>
+    </div>
+-->
+<!--     The container for the uploaded files -->
+<!--    <div id="files" class="files"></div>-->
 
 					</div>
 					<div class="col-lg-2">
@@ -586,12 +606,21 @@ while ($row = $result->fetch_assoc()) {
         
 	</div><!-- col-md-12 -->
 		</div><!-- container -->
-
-
-
+<script type="text/javascript">
+	var $table = $('#detail_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#pkg_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#char_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#pov_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#serv_tbl');
+	$table.bootstrapTable({})
+</script>
 <script type="text/javascript">
 
-
+$(document).ready(function(){
 //*****************Add & Remove Package*******************************
 
 	$("#add_pkg").click(function(e){ 
@@ -657,19 +686,8 @@ while ($row = $result->fetch_assoc()) {
 		});
 	});
 
-
+});
 </script> 
-<script type="text/javascript">
-	var $table = $('#detail_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#pkg_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#char_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#pov_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#serv_tbl');
-	$table.bootstrapTable({})
-</script>
+
 </body>
 </html>

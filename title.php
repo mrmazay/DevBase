@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/redmond/jquery-ui.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="css/custom.css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
-  	<script type="text/javascript" src="js/JQuery.JSAjaxFileUploader.js"></script>
-      <link href="css/JQuery.JSAjaxFileUploader.css" rel="stylesheet" type="text/css" />
+
 	</head>
 
    <body>
