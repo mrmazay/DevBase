@@ -53,7 +53,7 @@ require 'title.php';
 							<th data-sortable="true" data-field="Type">Type</th>
 							<th data-sortable="true" data-field="Status">Status</th>
 							<th data-sortable="true" data-field="ManufactDate">Manufact<br>Date</th>
-<!--							<th data-field="Action">Action</th>-->
+							<th data-field="Action">Action</th>
 						</thead>
 
 					</table>
