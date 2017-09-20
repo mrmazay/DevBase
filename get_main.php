@@ -43,6 +43,7 @@ if ($_GET['q']=='get_main'){
 
 	$i=1;
 	while ($row = $result->fetch_assoc()) {
+        if ($row['IsMeasure']=='0'){$row['NextPov']='-';}
 		$name = array(
 			'num' => $i,
 			'SiId'=> $row['SiId'],

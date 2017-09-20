@@ -345,8 +345,38 @@ $("#table").on('click','.srv-btn',function(e){
 
 });
 
-</script>
 
+</script>
+<nav class="context-menu">
+  <ul class="context-menu__items">
+    <li class="context-menu__item">
+      <a href="#" class="context-menu__link">
+        <i class="fa fa-eye"></i> View Task
+      </a>
+    </li>
+    <li class="context-menu__item">
+      <a href="#" class="context-menu__link">
+        <i class="fa fa-edit"></i> Edit Task
+      </a>
+    </li>
+    <li class="context-menu__item">
+      <a href="#" class="context-menu__link">
+        <i class="fa fa-times"></i> Delete Task
+      </a>
+    </li>
+  </ul>
+</nav>
+<script>
+   (function() {
+
+  "use strict";
+
+  document.addEventListener( "contextmenu", function(e) {
+    console.log(e);
+  });
+
+})();
+</script>
 
 	</body>
 	</html>
