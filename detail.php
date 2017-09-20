@@ -643,6 +643,7 @@ $("#pov_frm").submit(function(e){
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
      });
+    return false;
 });
 //*****************Add & Remove Package*******************************
 
