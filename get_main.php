@@ -187,6 +187,7 @@ if ($_GET['q']=='get_pov'){
 			'id'=> $row['id'],
 			'PovDate'=> $row['PovDate'],
 			'Doc'=> $row['Doc'],
+            'File'=>'<a href="'.$row['File'].'">'.$row['File'].'</a> ',
 			'Action'=>'<a class="btn btn-primary btn-xs"  href=#?SiId='.$row['SiId'].'>Delete</a>'
 			);
  	 		 	 			//echo ($row[1]);
@@ -389,7 +390,7 @@ if($_GET['q']=="add_pov") {
 
 //Upload file
 $uploadfile = $_FILES['filename']['name'];
-$dest = getcwd().'/uploads/'.date("Y").'/'.md5(date("Y-m-d H:i:s")).'.'.substr($uploadfile, -3);
+$dest ='./uploads/'.date("Y").'/'.md5(date("Y-m-d H:i:s")).'.'.substr($uploadfile, -3);
 if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
     echo "err!<br>".$_FILES['filename']['name'].'<br>';
     echo $dest.'<br>';
@@ -401,7 +402,7 @@ if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
 
 
 	$sql="INSERT INTO tPov (`SiId`,`PovDate`,`Doc`,`File`)
-					  VALUES ('$SiId','$PovDate','$Doc','$dest')";
+					  VALUES ($SiId,'$PovDate','$Doc','$dest')";
 
 	$result = $con->query($sql);
 
@@ -419,6 +420,7 @@ if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
 			'id'=> $row['id'],
 			'PovDate'=> $row['PovDate'],
 			'Doc'=> $row['Doc'],
+            'File'=>'<a href="'.$row['File'].'">'.$row['File'].'</a> ',
 			'Action'=>'<a class="btn btn-primary btn-xs"  href=#?SiId='.$row['SiId'].'>Delete</a>'
 			);
  	 		 	 			//echo ($row[1]);

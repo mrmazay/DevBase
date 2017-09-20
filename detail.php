@@ -431,6 +431,7 @@ while ($row = $result->fetch_assoc()) {
 					<th data-field="id" data-sortable="true"> id</th>
 					<th data-field="PovDate" data-sortable="true">Дата</th>
 					<th data-field="Doc" data-sortable="true">Документ</th>
+                    <th data-field="File" data-sortable="true">Скан</th>
 					<th data-field="Action">Action</th>	
 				</thead>
 				
