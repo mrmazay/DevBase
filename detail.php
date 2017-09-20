@@ -374,7 +374,10 @@ while ($row = $result->fetch_assoc()) {
 					</div><!-- panel -->
 				</div><!-- col-md-6 -->
 			</div><!-- row -->
-<!-- *****************************************************************ROW-2****************************************** -->
+<!--    *************************************************************************************    -->
+<!--                                     ROW-2
+                                      Calibration                                                -->
+<!--    *************************************************************************************    -->
 			<div class="row" id="row-2">				
 				<div class="col-md-6">
 					<div class="panel  panel-primary" id="pov-panel">
@@ -382,7 +385,7 @@ while ($row = $result->fetch_assoc()) {
 							<span class="" id="tbl_title">Поверка/калибровка</span>  
 						</div><!-- panel-heading -->
 						<div class="panel-body">
-					<form enctype="multipart/form-data" class="form-horizontal" role="form" id="pov_frm"  method="POST" >
+					<form enctype="multipart/form-data" class="form-horizontal" role="form" id="pov_frm"  method="POST" action="get_main.php?q=add_pov" >
 				<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
 				<div class="form-group">
 					<label for="PovDate" class="col-lg-2 control-label">Дата</label>
@@ -401,47 +404,19 @@ while ($row = $result->fetch_assoc()) {
 
 					</div>
 				</div>
+
 				<div class="form-group">
 					<label for="file" class="col-lg-2 control-label">Скан</label>
-					<div class="col-lg-3">
+			<div class="col-lg-3">
+            <input id="file" name="filename" type="file">
+            </div>
+				</div>
 
-<!--
-						<div class="file_upload">
-							<button type="button">Выбрать</button>
-							<div>Файл не выбран</div>
-							<input type="file">
-						</div>
--->                 <span class="btn btn-primary fileinput-button">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Select files...</span>
-        <!-- The file input field used as target for the file upload widget -->
-        <input id="fileupload" type="file" name="files[]" multiple>
-    </span>
-<!--
-    <br>
-    <br>
--->
-    <!-- The global progress bar -->
-<!--
-    <div id="progress" class="progress">
-        <div class="progress-bar progress-bar-success"></div>
-    </div>
--->
-<!--     The container for the uploaded files -->
-<!--    <div id="files" class="files"></div>-->
-
-					</div>
-					<div class="col-lg-2">
-<!-- <button id="add_pov" class="btn btn-primary">Добавить</button> -->
-					</div>
-
+                <div class="col-lg-2">
+            <button id="add_pov" class="btn btn-primary">Добавить</button>
 				</div>
 			</form>
-			<!-- <div class="form-group"> -->
-				<div class="col-lg-offset-2 col-lg-10">
-					<button id="add_pov" class="btn btn-primary">Добавить</button>
-				</div>
-			<!-- </div> -->
+
 			
 			<div class="table-responsive">
 				<table 
@@ -464,6 +439,9 @@ while ($row = $result->fetch_assoc()) {
 						</div><!-- panel body -->
 					</div><!-- panel -->
 				</div><!-- col-md-6 -->
+<!--    *************************************************************************************   -->
+<!--                                        Service -->
+<!--    ***************************************************************************************  -->
 				<div class="col-md-6">
 					<div class="panel  panel-primary" id="serv-panel">
 						<div class="panel-heading "> 
@@ -618,9 +596,54 @@ while ($row = $result->fetch_assoc()) {
 	var $table = $('#serv_tbl');
 	$table.bootstrapTable({})
 </script>
+
+
+<!--
+  <script type="text/javascript">
+    $("form[name='pov_frm']").submit(function(e) {
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            url: 'file.php',
+            type: "POST",
+            data: formData,
+            async: false,
+            success: function (msg) {
+                alert(msg);
+            },
+            error: function(msg) {
+                alert('Ошибка!');
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+        e.preventDefault();
+    });
+    </script>
+-->
+
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+$("#pov_frm").submit(function(e){
+    e.preventDefault();
+   var formData = new FormData($(this).get(0));
+     $.ajax({
+	                url: 'get_main.php?q=add_pov',
+	                dataType: 'text',
+	                cache: false,
+	                contentType: false,
+                    processData: false,
+	                data: form_data,
+	                type: 'post',
+	                success: function( data ) {
+			var $table = $('#pov_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
+     });
+});
 //*****************Add & Remove Package*******************************
 
 	$("#add_pkg").click(function(e){ 
@@ -662,18 +685,19 @@ $(document).ready(function(){
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
 	});
-        
+    });
    //*****************Add & Remove Pov*******************************
         
-	});
-	$("#add_pov").click(function(e){ 
-		$.post( "get_main.php?q=add_pov", $( "#pov_frm" ).serialize())
-		.done(function( data ) {
-			
-			var $table = $('#pov_tbl');
-			$table.bootstrapTable('load',JSON.parse(data));
-		});
-	});
+
+//	$("#add_pov").click(function(e){
+//		$.post( "get_main.php?q=add_pov", $( "#pov_frm" ).serialize())
+//		.done(function( data ) {
+//
+//			var $table = $('#pov_tbl');
+//			$table.bootstrapTable('load',JSON.parse(data));
+//		});
+//        return false;
+//	});
 
 
 //*****************Add & Remove Service *******************************

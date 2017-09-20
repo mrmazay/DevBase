@@ -386,10 +386,19 @@ if($_GET['q']=="add_pov") {
 	$SiId		= $_POST['SiId']; 
 	$PovDate   	= $_POST['PovDate'];
 	$Doc 		= $_POST['Doc'];
+
+//Upload file
+$uploadfile = $_FILES['filename']['name'];
+$dest = './uploads/';
+if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
+    echo "err!\n";
+}
+
+
 	
 
-	$sql="INSERT INTO tPov (`SiId`,`PovDate`,`Doc`) 
-					  VALUES ($SiId,'$PovDate','$Doc')";
+	$sql="INSERT INTO tPov (`SiId`,`PovDate`,`Doc`,`File`)
+					  VALUES ('$SiId','$PovDate','$Doc','$dest')";
 
 	$result = $con->query($sql);
     
