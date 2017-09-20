@@ -585,16 +585,7 @@ while ($row = $result->fetch_assoc()) {
 	</div><!-- col-md-12 -->
 		</div><!-- container -->
 <script type="text/javascript">
-	var $table = $('#detail_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#pkg_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#char_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#pov_tbl');
-	$table.bootstrapTable({});
-	var $table = $('#serv_tbl');
-	$table.bootstrapTable({})
+
 </script>
 
 
@@ -627,6 +618,18 @@ while ($row = $result->fetch_assoc()) {
 
 $(document).ready(function(){
 
+	var $table = $('#detail_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#pkg_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#char_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#pov_tbl');
+	$table.bootstrapTable({});
+	var $table = $('#serv_tbl');
+	$table.bootstrapTable({})
+
+
 $("#pov_frm").submit(function(e){
     e.preventDefault();
    var formData = new FormData($(this).get(0));
@@ -636,12 +639,12 @@ $("#pov_frm").submit(function(e){
 	                cache: false,
 	                contentType: false,
                     processData: false,
-	                data: form_data,
+	                data: formData,
 	                type: 'post',
 	                success: function( data ) {
 			var $table = $('#pov_tbl');
 			$table.bootstrapTable('load',JSON.parse(data));
-		});
+		}
      });
     return false;
 });

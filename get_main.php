@@ -389,7 +389,7 @@ if($_GET['q']=="add_pov") {
 
 //Upload file
 $uploadfile = $_FILES['filename']['name'];
-$dest = 'uploads/'.date("Y").'/'.md5(date("Y-m-d H:i:s")).'.'.substr($uploadfile, -3);
+$dest = getcwd().'/uploads/'.date("Y").'/'.md5(date("Y-m-d H:i:s")).'.'.substr($uploadfile, -3);
 if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
     echo "err!<br>".$_FILES['filename']['name'].'<br>';
     echo $dest.'<br>';
