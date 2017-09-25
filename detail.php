@@ -624,8 +624,8 @@ $("#pov_frm").submit(function(e){
     $("#pov_tbl").on('click','.rm-pov',function(e){
 		var $id = $(this).attr('value');
         var $SiId=$( '#SiId' ).attr('value');
-
-		$.post( "get_main.php?q=rm_pov", {id:$id , SiId: $SiId})
+        var $fname=$(this).attr('data-fname');
+		$.post( "get_main.php?q=rm_pov", {id: $id , SiId: $SiId , fname: $fname })
 		.done(function( data ) {
 
 			var $table = $('#pov_tbl');
