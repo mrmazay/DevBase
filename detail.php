@@ -67,6 +67,9 @@ while ($row = $result->fetch_assoc()) {
 		<div class="panel-group">
 
 			<div class="row" id="row-1">
+<!--    ***************************************************************************************  -->
+<!--                                        Main Prop/                                           -->
+<!--    ***************************************************************************************  -->
 				<div class="col-md-6">
 					<div class="panel  panel-primary" id="main-panel">
 						<div class="panel-heading "> 
@@ -242,7 +245,7 @@ while ($row = $result->fetch_assoc()) {
 													echo "<option value =".$row['id'].">".$row['Name']."</option>";
 												}else{
 
-													echo "<option selected value =".$row['id'].">".$row['Name']."</option>";	
+													echo "<option selected value = ".$row['id'].">".$row['Name']."</option>";
 												}
 											}
 											?>
@@ -255,10 +258,15 @@ while ($row = $result->fetch_assoc()) {
 									</div>
 								</div>	
 							</form>
-<!-- *************************************************************** -->
+
 						</div><!-- panel body -->
-					</div><!-- panel -->
+                    </div><!-- panel -->
 				</div><!-- col-md-6 -->
+
+<!--    ***************************************************************************************  -->
+<!--                                        Package                                              -->
+<!--    ***************************************************************************************  -->
+
 				<div class="col-md-6">
 					<div class="panel  panel-primary" id="package-panel">
 						<div class="panel-heading "> 
@@ -319,6 +327,11 @@ while ($row = $result->fetch_assoc()) {
 						</div><!-- panel body -->
 					</div><!-- panel -->
 				</div><!-- col-md-6 -->
+
+<!--    ***************************************************************************************  -->
+<!--                                        Character                                            -->
+<!--    ***************************************************************************************  -->
+
 				<div class="col-md-6">
 					<div class="panel  panel-primary" id="char-panel">
 						<div class="panel-heading "> 
@@ -337,7 +350,7 @@ while ($row = $result->fetch_assoc()) {
 					</div>
 					<div class="form-group">
 						<label for="Value" class="col-lg-2 control-label">Значение</label>
-						<div class="col-lg-2">
+						<div class="col-lg-7">
 							<input type="Text" class="form-control" name="Value" id="Value" placeholder="Value">
 						</div>
 						<div class="col-lg-2">
@@ -440,8 +453,8 @@ while ($row = $result->fetch_assoc()) {
 						</div><!-- panel body -->
 					</div><!-- panel -->
 				</div><!-- col-md-6 -->
-<!--    *************************************************************************************   -->
-<!--                                        Service -->
+<!--    ***************************************************************************************  -->
+<!--                                        Service                                              -->
 <!--    ***************************************************************************************  -->
 				<div class="col-md-6">
 					<div class="panel  panel-primary" id="serv-panel">
@@ -539,52 +552,12 @@ while ($row = $result->fetch_assoc()) {
 					</div><!-- panel -->
 				</div><!-- col-md-6 -->
 			</div><!-- row -->
-
 		</div><!-- panel-group -->
-        
-<!--//////////////////////////////////////////////////////////////////////////////////////////        -->
-        	<button class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#myModal">Показать всплывающее окно</button>
-
-<div id="myModal" class="modal fade">
-<div class="modal-dialog">
-<div class="modal-content">
-<div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
-<h4 class="modal-title">Заголовок окна</h4>
-</div>
-<div class="modal-body">
-<div class="table-responsive">
-			<table 
-			id="serv_tbl" 
-			class="table table-striped table-bordered table-condensed" 
-			data-url="get_main.php?q=get_serv&SiId=<?php echo $SiId?>"
-			data-method="POST"  
-			data-height="200" 
-			data-show-refresh="true" 
-			data-mobile-responsive="true" > 
-			<thead>
-				<th data-field="id" data-sortable="true"> id</th>
-				<th data-field="ServDate" data-sortable="true">Дата</th>
-				<th data-field="ServType" data-sortable="true">Вид</th>
-				<th data-field="Description" data-sortable="true">Описание</th>
-				<th data-field="Executor" data-sortable="true">Выполнил</th>
-				<th data-field="NextDate" data-sortable="true">Дата след.</th>
-				<th data-field="Action">Action</th>
-			</thead>
-			
-		</table>
-	</div>
-</div><!-- modal-body -->
-<div class="modal-footer">
-<button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button>
-</div><!-- modal-footer -->
-</div><!-- modal-contenet -->
-</div><!-- modal-dialog -->
-</div><!-- class-modal-fade -->
-<!--        ******************************************************************************************-->
-        
-        
 	</div><!-- col-md-12 -->
-		</div><!-- container -->
+</div><!-- container -->
+
+
+
 
 <script type="text/javascript">
 
@@ -601,7 +574,9 @@ $(document).ready(function(){
 	var $table = $('#serv_tbl');
 	$table.bootstrapTable({})
 
-//*****************Add & Remove Calibration********************************
+//********************************
+//      Add & Remove Calibration
+//********************************
 $("#pov_frm").submit(function(e){
     e.preventDefault();
    var formData = new FormData($(this).get(0));
@@ -634,8 +609,9 @@ $("#pov_frm").submit(function(e){
 	});
 
 
-//*****************Add & Remove Package*******************************
-
+//********************************
+//          Add & Remove Package
+//********************************
 	$("#add_pkg").click(function(e){ 
 		$.post( "get_main.php?q=add_pkg", $( "#pkg_frm" ).serialize())
 		.done(function( data ) {
@@ -657,7 +633,9 @@ $("#pov_frm").submit(function(e){
 		});
 	});
 
-//*****************Add & Remove Character*******************************
+//********************************
+//          Add & Remove Character
+//********************************
 	$("#add_char").click(function(e){ 
 		$.post( "get_main.php?q=add_char", $( "#char_frm" ).serialize())
 		.done(function( data ) {
@@ -677,21 +655,9 @@ $("#pov_frm").submit(function(e){
 		});
 	});
 
-   //*****************Add & Remove Pov*******************************
-        
-
-//	$("#add_pov").click(function(e){
-//		$.post( "get_main.php?q=add_pov", $( "#pov_frm" ).serialize())
-//		.done(function( data ) {
-//
-//			var $table = $('#pov_tbl');
-//			$table.bootstrapTable('load',JSON.parse(data));
-//		});
-//        return false;
-//	});
-
-
-//*****************Add & Remove Service *******************************
+//********************************
+//          Add & Remove Service
+//********************************
 	$("#add_serv").click(function(e){ 
 		$.post( "get_main.php?q=add_serv", $( "#serv_frm" ).serialize())
 		.done(function( data ) {
