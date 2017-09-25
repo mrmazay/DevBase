@@ -214,7 +214,7 @@ while ($row = $result->fetch_assoc()) {
 								<div class="form-group">
 									<label for="ManufactDate" class="col-lg-2 control-label">Дата изготовления</label>
 									<div class="col-lg-10">
-										<input type="Text" class="form-control" name="ManufactDate" id="ManufactDate" placeholder="01.01.2014" value="<?php echo $ManufactDate;?>">
+										<input type="date/month/week/time" class="form-control" name="ManufactDate" id="ManufactDate" placeholder="01.01.2014" value="<?php echo $ManufactDate;?>">
 									</div>
 								</div>
 								<div class="form-group">
@@ -585,35 +585,6 @@ while ($row = $result->fetch_assoc()) {
         
 	</div><!-- col-md-12 -->
 		</div><!-- container -->
-<script type="text/javascript">
-
-</script>
-
-
-<!--
-  <script type="text/javascript">
-    $("form[name='pov_frm']").submit(function(e) {
-        var formData = new FormData($(this)[0]);
-
-        $.ajax({
-            url: 'file.php',
-            type: "POST",
-            data: formData,
-            async: false,
-            success: function (msg) {
-                alert(msg);
-            },
-            error: function(msg) {
-                alert('Ошибка!');
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-        e.preventDefault();
-    });
-    </script>
--->
 
 <script type="text/javascript">
 
@@ -630,7 +601,7 @@ $(document).ready(function(){
 	var $table = $('#serv_tbl');
 	$table.bootstrapTable({})
 
-
+//*****************Add & Remove Calibration********************************
 $("#pov_frm").submit(function(e){
     e.preventDefault();
    var formData = new FormData($(this).get(0));
@@ -649,6 +620,20 @@ $("#pov_frm").submit(function(e){
      });
     return false;
 });
+
+    $("#pov_tbl").on('click','.rm-pov',function(e){
+		var $id = $(this).attr('value');
+        var $SiId=$( '#SiId' ).attr('value');
+
+		$.post( "get_main.php?q=rm_pov", {id:$id , SiId: $SiId})
+		.done(function( data ) {
+
+			var $table = $('#pov_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
+	});
+
+
 //*****************Add & Remove Package*******************************
 
 	$("#add_pkg").click(function(e){ 
@@ -663,6 +648,7 @@ $("#pov_frm").submit(function(e){
 	$("#pkg_tbl").on('click','.rm-pkg',function(e){ 
 		var $id = $(this).attr('value');
         var $SiId=$( '#SiId' ).attr('value');
+
 		$.post( "get_main.php?q=rm_pkg", {id:$id , SiId: $SiId})
 		.done(function( data ) {
 			
@@ -679,7 +665,7 @@ $("#pov_frm").submit(function(e){
 			var $table = $('#char_tbl');
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
-        
+        });
     $("#char_tbl").on('click','.rm-char',function(e){ 
 		var $id = $(this).attr('value');
         var $SiId=$( '#SiId' ).attr('value');
@@ -690,7 +676,7 @@ $("#pov_frm").submit(function(e){
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
 	});
-    });
+
    //*****************Add & Remove Pov*******************************
         
 

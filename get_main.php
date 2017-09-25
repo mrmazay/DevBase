@@ -83,7 +83,7 @@ if ($_GET['q']=='get_pkg'){
 			'id'=> $row['id'],
 			'Name'=> $row['Name'],
 			'Count'=> $row['Count'],
-			'Action'=>'<a class="btn btn-primary btn-xs rm-pkg " id="rm-pkg-btn" value="'.$row['id'].'">Del</a> '//href=get_main.php?q=rm_pkg&id='.$row['id'].'>Delete</a>'
+			'Action'=>'<a class="btn btn-primary btn-xs rm-pkg" id="rm-pkg-btn" value="'.$row['id'].'">Del</a>'
 			);
  	 		 	 			//echo ($row[1]);
 
@@ -109,7 +109,7 @@ if ($_GET['q']=='rm_pkg'){
 			'id'=> $row['id'],
 			'Name'=> $row['Name'],
 			'Count'=> $row['Count'],
-			'Action'=>'<a class="btn btn-primary btn-xs rm-pkg " id="rm-pkg-btn" value="'.$row['id'].'">Del</a> '
+			'Action'=>'<a class="btn btn-primary btn-xs rm-pkg " id="rm-pkg-btn" value="'.$row['id'].'">Del</a>'
 			);
  	 		 	 			//echo ($row[1]);
 
@@ -135,7 +135,7 @@ if ($_GET['q']=='get_char'){
 			'id'=> $row['id'],
 			'Charact'=> $row['Charact'],
 			'Value'=> $row['Value'],
-			'Action'=>'<a class="btn btn-primary btn-xs rm-char "  value="'.$row['id'].'">Del</a> '
+			'Action'=>'<a class="btn btn-primary btn-xs rm-char"  id="rm-char-btn" value="'.$row['id'].'">Del</a> '
 			);
  	 		 	 			//echo ($row[1]);
 
@@ -162,9 +162,10 @@ if ($_GET['q']=='rm_char'){
 			'id'=> $row['id'],
 			'Name'=> $row['Name'],
 			'Count'=> $row['Count'],
-			'Action'=>'<a class="btn btn-primary btn-xs rm-char "  value="'.$row['id'].'">Del</a> '
+			'Action'=>'<a class="btn btn-primary btn-xs rm-char"  id="rm-char-btn" value="'.$row['id'].'">Del</a> '
 			);
  	 		 	 			//echo ($row[1]);
+
 
 
 		array_push($arrVal, $name);
@@ -189,7 +190,7 @@ if ($_GET['q']=='get_pov'){
 			'PovDate'=> $row['PovDate'],
 			'Doc'=> $row['Doc'],
             'File'=>'<a href="'.$row['File'].'">'.$row['File'].'</a> ',
-			'Action'=>'<a class="btn btn-primary btn-xs"  href=#?SiId='.$row['SiId'].'>Delete</a>'
+			'Action'=>'<a class="btn btn-primary btn-xs rm-pov"  id="rm-pov-btn" value="'.$row['id'].'">Del</a>'
 			);
  	 		 	 			//echo ($row[1]);
 
@@ -199,6 +200,34 @@ if ($_GET['q']=='get_pov'){
 	}
 	echo  json_encode($arrVal);
 }
+
+if ($_GET['q']=='rm_pov'){
+	$id=$_POST['id'];
+	$SiId=$_POST['SiId'];
+	$sql="delete from tPov where id='".$id."'";
+	$result = $con->query($sql);
+
+	$sql="select * from tPov where SiId='".$SiId."'";
+	$result = $con->query($sql);
+	while ($row = $result->fetch_assoc()){
+
+		$name = array(
+
+			'id'=> $row['id'],
+			'PovDate'=> $row['PovDate'],
+			'Doc'=> $row['Doc'],
+            'File'=>'<a href="'.$row['File'].'">'.$row['File'].'</a> ',
+			'Action'=>'<a class="btn btn-primary btn-xs rm-pov"  id="rm-pov-btn" value="'.$row['id'].'">Del</a>'
+			);
+ 	 		 	 			//echo ($row[1]);
+
+
+		array_push($arrVal, $name);
+
+	}
+	echo  json_encode($arrVal);
+}
+
 //**************************************************************************************************
 if ($_GET['q']=='get_serv'){
 	$SiId=$_GET['SiId'];
@@ -215,7 +244,7 @@ if ($_GET['q']=='get_serv'){
 			'Executor'=> $row['Executor'],
 			'Description'=> $row['Description'],
 			'NextDate'=> $row['NextDate'],
-			'Action'=>'<a class="btn btn-primary btn-xs"  href=#?SiId='.$row['SiId'].'>Delete</a>'
+			'Action'=>'<a class="btn btn-primary btn-xs rm-serv"  href=#?SiId='.$row['SiId'].'>Delete</a>'
 			);
  	 		 	 			//echo ($row[1]);
 
