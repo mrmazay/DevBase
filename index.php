@@ -63,8 +63,11 @@ require 'title.php';
 		</div>
 		</div>
 
-
-<!--*******************ModalPov******************************-->
+<!--
+//***************************************
+//   Modal  Add & Remove Calibration
+//***************************************
+-->
 
 <div id="PovModal" class="modal fade">
 <div class="modal-dialog">
@@ -74,16 +77,18 @@ require 'title.php';
 </div>
 <div class="modal-body">
 
+
+
 <div class="panel  panel-primary" id="pov-panel">
 						<div class="panel-heading ">
-							<span class="" id="pov_tbl_title">Поверка/калибровка</span>
+							<span class="" id="tbl_title">Поверка/калибровка</span>
 						</div><!-- panel-heading -->
 						<div class="panel-body">
-					<form enctype="multipart/form-data" class="form-horizontal" role="form" id="pov_frm"  method="POST" >
-				<input type="hidden" class="form-control" name="SiId" id="SiId" value="" >
+					<form enctype="multipart/form-data" class="form-horizontal" role="form" id="pov_frm"  method="POST" action="get_main.php?q=add_pov" >
+				<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
 				<div class="form-group">
 					<label for="PovDate" class="col-lg-2 control-label">Дата</label>
-					<div class="col-lg-7">
+					<div class="col-lg-2">
 						<input type="Text" class="form-control" name="PovDate" id="PovDate" placeholder="2014-01-01">
 					</div>
 					<div class="col-lg-2">
@@ -99,19 +104,24 @@ require 'title.php';
 					</div>
 				</div>
 
-				<div id="target-div1"></div>
-			
-			</form>
-			<!-- <div class="form-group"> -->
-				<div class="col-lg-offset-2 col-lg-10">
-					<button id="add_pov" class="btn btn-primary">Добавить</button>
+				<div class="form-group">
+					<label for="file" class="col-lg-2 control-label">Скан</label>
+			<div class="col-lg-3">
+            <input id="file" name="filename" type="file">
+            </div>
 				</div>
-			<!-- </div> -->
+
+                <div class="col-lg-2">
+            <button id="add_pov" class="btn btn-primary">Добавить</button>
+				</div>
+			</form>
+
 
 			<div class="table-responsive">
 				<table
 				id="pov_tbl"
 				class="table table-striped table-bordered table-condensed"
+				data-url="get_main.php?q=get_pov&SiId=<?php echo $SiId?>"
 				data-method="POST"
 				data-height="200"
 				data-show-refresh="true"
@@ -120,6 +130,7 @@ require 'title.php';
 					<th data-field="id" data-sortable="true"> id</th>
 					<th data-field="PovDate" data-sortable="true">Дата</th>
 					<th data-field="Doc" data-sortable="true">Документ</th>
+                    <th data-field="File" data-sortable="true">Скан</th>
 					<th data-field="Action">Action</th>
 				</thead>
 
@@ -127,6 +138,8 @@ require 'title.php';
 		</div>
 						</div><!-- panel body -->
 					</div><!-- panel -->
+
+
     </div><!-- modal-body -->
 <div class="modal-footer">
 <button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button>
@@ -135,7 +148,11 @@ require 'title.php';
 </div><!-- modal-dialog -->
 </div><!-- class-modal-fade -->
 
-<!--***********************************************************************************-->
+<!--
+//********************************
+//   Modal Add & Remove Service
+//********************************
+-->
 <div id="SrvModal" class="modal fade">
 <div class="modal-dialog">
 <div class="modal-content">
@@ -255,9 +272,12 @@ require 'title.php';
 
 <script type="text/javascript">
 $(document).ready(function(){
-//    $('#target-div1').JSAjaxFileUploader({
-//        uploadUrl:'upload.php'
-//    });
+$("#pov_tbl").bootstrapTable({});
+$("#srv_tbl").bootstrapTable({});
+
+//*************************************
+//               Row COunts
+//*************************************
 
     $('#table').bootstrapTable({
     onLoadSuccess: function (e,data) {
@@ -271,51 +291,68 @@ $(document).ready(function(){
     }
 });
 
-$("#pov_tbl").bootstrapTable({});
-$("#srv_tbl").bootstrapTable({});
-//*************************************************************************
-$("#table").on('click','.pov-btn',function(e){
-//		var $id = $(this).attr('value');
-        var $SiId=$(this ).attr('id');
-    $("#SiId").val($SiId);
-    $("#pov_tbl_title").text($(this).attr('siname'));
-		$.post( "get_main.php?q=get_pov&SiId="+$SiId, {SiId: $SiId})
-		.done(function( data ) {
 
+//*************************************
+//     Modal Add & Remove Calibration
+//*************************************
+//$("#table").on('click','.pov-btn',function(e){
+////		var $id = $(this).attr('value');
+//        var $SiId=$(this ).attr('id');
+//    $("#SiId").val($SiId);
+//    $("#pov_tbl_title").text($(this).attr('siname'));
+//		$.post( "get_main.php?q=get_pov&SiId="+$SiId, {SiId: $SiId})
+//		.done(function( data ) {
+//
+//			var $table = $('#pov_tbl');
+//			$table.bootstrapTable('load',JSON.parse(data));
+//		});
+//	});
+//
+//    $("#add_pov").click(function(e){
+//		$.post( "get_main.php?q=add_pov", $( "#pov_frm" ).serialize())
+//		.done(function( data ) {
+//
+//			var $table = $('#pov_tbl');
+//			$table.bootstrapTable('load',JSON.parse(data));
+//		});
+//	});
+
+    $("#pov_frm").submit(function(e){
+    e.preventDefault();
+   var formData = new FormData($(this).get(0));
+     $.ajax({
+	                url: 'get_main.php?q=add_pov',
+	                dataType: 'text',
+	                cache: false,
+	                contentType: false,
+                    processData: false,
+	                data: formData,
+	                type: 'post',
+	                success: function( data ) {
 			var $table = $('#pov_tbl');
 			$table.bootstrapTable('load',JSON.parse(data));
-		});
-	});
-
-    $("#add_pov").click(function(e){
-		$.post( "get_main.php?q=add_pov", $( "#pov_frm" ).serialize())
-		.done(function( data ) {
-
-			var $table = $('#pov_tbl');
-			$table.bootstrapTable('load',JSON.parse(data));
-		});
-	});
-
-//***********************Missed CLick****************************************************
-    $("#missed").change(function(){
-		if ($('#missed').prop('checked')) {
-		$.post( "get_main.php?q=get_missed")
-		.done(function( data ) {
-			var $table = $('#table');
-			$table.bootstrapTable('load',JSON.parse(data));
-
-	//	return true;
-		});
 		}
-		$.post( "get_main.php?q=get_main")
-		.done(function( data ) {
-			var $table = $('#table');
-			$table.bootstrapTable('load',JSON.parse(data));
+     });
+    return false;
+});
 
-	//	return false;
+    $("#pov_tbl").on('click','.rm-pov',function(e){
+		var $id = $(this).attr('value');
+        var $SiId=$( '#SiId' ).attr('value');
+        var $fname=$(this).attr('data-fname');
+		$.post( "get_main.php?q=rm_pov", {id: $id , SiId: $SiId , fname: $fname })
+		.done(function( data ) {
+
+			var $table = $('#pov_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
 	});
-	});
-//**********************ServPopup***********************************************
+
+
+
+//*************************************
+//     Modal Add & Remove Service
+//*************************************
 $("#table").on('click','.srv-btn',function(e){
 //		var $id = $(this).attr('value');
         var $SiId=$(this ).attr('id');
@@ -339,6 +376,27 @@ $("#table").on('click','.srv-btn',function(e){
 	});
 
 
+//***********************Missed CLick****************************************************
+    $("#missed").change(function(){
+		if ($('#missed').prop('checked')) {
+		$.post( "get_main.php?q=get_missed")
+		.done(function( data ) {
+			var $table = $('#table');
+			$table.bootstrapTable('load',JSON.parse(data));
+
+	//	return true;
+		});
+		}
+		$.post( "get_main.php?q=get_main")
+		.done(function( data ) {
+			var $table = $('#table');
+			$table.bootstrapTable('load',JSON.parse(data));
+
+	//	return false;
+	});
+	});
+
+
 
 
 
@@ -347,6 +405,8 @@ $("#table").on('click','.srv-btn',function(e){
 
 
 </script>
+
+<!--
 <nav class="context-menu">
   <ul class="context-menu__items">
     <li class="context-menu__item">
@@ -377,6 +437,7 @@ $("#table").on('click','.srv-btn',function(e){
 
 })();
 </script>
+-->
 
 	</body>
 	</html>
