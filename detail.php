@@ -15,6 +15,7 @@ $ManufactDate= $_POST['ManufactDate'];
 $Type 		= $_POST['Type'];
 $Status 	= $_POST['Status'];
 $MeasureCode= $_POST['MeasureCode'];
+$IsMeasure  = $POST['IsMeasure'];
 if (($_GET['q']=='update') && (!empty($_GET['SiId']))){
 	
 	$sql="UPDATE `tSI` SET `Name`='$Name',
@@ -28,7 +29,8 @@ if (($_GET['q']=='update') && (!empty($_GET['SiId']))){
 	`ManufactDate`='$ManufactDate',
 	`Type`='$Type',
 	`Status`='$Status',
-	`MeasureCode`='$MeasureCode'
+	`MeasureCode`='$MeasureCode',
+    `IsMeasure`='$IsMeasure'
 	WHERE SiId=$SiId;";
 	$result = $con->query($sql);
 //	echo $sql;	 
@@ -55,7 +57,7 @@ while ($row = $result->fetch_assoc()) {
 	$Type 		 = $row['Type'];
 	$Status 	 = $row['Status'];
 	$MeasureCode = $row['MeasureCode'];
-
+    $IsMeasure   = $row['IsMeasure'];
 }
 ?>
 
