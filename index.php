@@ -121,7 +121,6 @@ require 'title.php';
 				<table
 				id="pov_tbl"
 				class="table table-striped table-bordered table-condensed"
-				data-url="get_main.php?q=get_pov&SiId=<?php echo $SiId?>"
 				data-method="POST"
 				data-height="200"
 				data-show-refresh="true"
@@ -295,18 +294,18 @@ $("#srv_tbl").bootstrapTable({});
 //*************************************
 //     Modal Add & Remove Calibration
 //*************************************
-//$("#table").on('click','.pov-btn',function(e){
-////		var $id = $(this).attr('value');
-//        var $SiId=$(this ).attr('id');
-//    $("#SiId").val($SiId);
-//    $("#pov_tbl_title").text($(this).attr('siname'));
-//		$.post( "get_main.php?q=get_pov&SiId="+$SiId, {SiId: $SiId})
-//		.done(function( data ) {
-//
-//			var $table = $('#pov_tbl');
-//			$table.bootstrapTable('load',JSON.parse(data));
-//		});
-//	});
+$("#table").on('click','.pov-btn',function(e){
+//		var $id = $(this).attr('value');
+        var $SiId=$(this ).attr('id');
+    $("#SiId").val($SiId);
+    $("#pov_tbl_title").text($(this).attr('siname'));
+		$.post( "get_main.php?q=get_pov&SiId="+$SiId, {SiId: $SiId})
+		.done(function( data ) {
+
+			var $table = $('#pov_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
+	});
 //
 //    $("#add_pov").click(function(e){
 //		$.post( "get_main.php?q=add_pov", $( "#pov_frm" ).serialize())
