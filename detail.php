@@ -16,6 +16,7 @@ $Type 		= $_POST['Type'];
 $Status 	= $_POST['Status'];
 $MeasureCode= $_POST['MeasureCode'];
 $IsMeasure  = $POST['IsMeasure'];
+$Active  = $POST['Active'];
 if (($_GET['q']=='update') && (!empty($_GET['SiId']))){
 	
 	$sql="UPDATE `tSI` SET `Name`='$Name',
@@ -30,7 +31,8 @@ if (($_GET['q']=='update') && (!empty($_GET['SiId']))){
 	`Type`='$Type',
 	`Status`='$Status',
 	`MeasureCode`='$MeasureCode',
-    `IsMeasure`='$IsMeasure'
+    `IsMeasure`='$IsMeasure',
+    `Active`='$Active'
 	WHERE SiId=$SiId;";
 	$result = $con->query($sql);
 //	echo $sql;	 
@@ -58,6 +60,7 @@ while ($row = $result->fetch_assoc()) {
 	$Status 	 = $row['Status'];
 	$MeasureCode = $row['MeasureCode'];
     $IsMeasure   = $row['IsMeasure'];
+    $Active      = $row['Active'];
 }
 ?>
 
@@ -254,6 +257,7 @@ while ($row = $result->fetch_assoc()) {
 										</select>
 									</div>
 								</div>
+                                
 								<div class="form-group">
 									<div class="col-lg-offset-2 col-lg-4">
 										<button type="submit" class="btn btn-primary">Сохранить</button>
