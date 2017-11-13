@@ -9,34 +9,60 @@ $pass=  $_POST['password'];
 
 $arrVal = array();
 if ($_GET['q']=='get_main'){
+	// $sql="SELECT SI.SiId,
+ //        SI.Name,
+ //        SI.IsMeasure,
+ //        SI.SN,
+ //        SI.InvNum,
+ //        SI.DevCode,
+ //        SI.nWorkPlace,
+ //        Pl.Placement,
+ //        d.Department,
+ //        r.RespPerson,
+ //        YEAR(SI.ManufactDate) AS ManufactDate,
+ //        t.Type,
+ //        s.Status,
+ //        p.PovDate + INTERVAL SI.PovPeriod month AS NextPov
+ //        FROM tSI AS SI
+ //        LEFT OUTER JOIN
+ //        tResposible  AS r ON SI.RespPerson = r.id
+ //        LEFT OUTER JOIN
+ //        tPlacement   as Pl on SI.Placement=Pl.id
+ //        LEFT OUTER JOIN
+ //        tDepartments as d on SI.Department=d.id
+ //        LEFT OUTER JOIN
+ //        tTypes       as t    ON SI.Type=t.id
+ //        LEFT OUTER JOIN
+ //        tStatus      as s    ON SI.Status=s.id
+ //        LEFT OUTER JOIN tPov  as p on p.SiId=SI.SiId
+ //        WHERE p.PovDate=(select max(tPov.PovDate) FROM tPov WHERE tPov.SiId=SI.SiId) OR p.PovDate IS NULL
+ //        ORDER BY SI.SiId desc";
+
 	$sql="SELECT SI.SiId,
-        SI.Name,
-        SI.IsMeasure,
-        SI.SN,
-        SI.InvNum,
-        SI.DevCode,
-        SI.nWorkPlace,
-        Pl.Placement,
-        d.Department,
-        r.RespPerson,
-        YEAR(SI.ManufactDate) AS ManufactDate,
-        t.Type,
-        s.Status,
-        p.PovDate + INTERVAL SI.PovPeriod month AS NextPov
-        FROM tSI AS SI
-        LEFT OUTER JOIN
-        tResposible  AS r ON SI.RespPerson = r.id
-        LEFT OUTER JOIN
-        tPlacement   as Pl on SI.Placement=Pl.id
-        LEFT OUTER JOIN
-        tDepartments as d on SI.Department=d.id
-        LEFT OUTER JOIN
-        tTypes       as t    ON SI.Type=t.id
-        LEFT OUTER JOIN
-        tStatus      as s    ON SI.Status=s.id
-        LEFT OUTER JOIN tPov  as p on p.SiId=SI.SiId
-        WHERE p.PovDate=(select max(tPov.PovDate) FROM tPov WHERE tPov.SiId=SI.SiId) OR p.PovDate IS NULL
-        ORDER BY SI.SiId desc";
+				SI.Name,
+				SI.IsMeasure,
+				SI.SN,
+				SI.InvNum,
+				SI.DevCode,
+				SI.nWorkPlace,
+				Pl.Placement,
+				d.Department,
+				r.RespPerson,
+				YEAR(SI.ManufactDate) AS ManufactDate,
+				t.Type,
+				s.Status,
+				MAX(p.PovDate) + INTERVAL SI.PovPeriod month AS NextPov
+		FROM tSI AS SI
+		LEFT OUTER JOIN tResposible  AS r  ON SI.RespPerson = r.id
+		LEFT OUTER JOIN tPlacement   as Pl on SI.Placement=Pl.id
+		LEFT OUTER JOIN tDepartments as d  on SI.Department=d.id
+		LEFT OUTER JOIN tTypes       as t  ON SI.Type=t.id
+		LEFT OUTER JOIN tStatus      as s  ON SI.Status=s.id
+		LEFT OUTER JOIN tPov  		 as p  on p.SiId=SI.SiId
+		GROUP BY SI.SiId
+		ORDER BY SI.SiId desc";
+
+
 		$result = $con->query($sql);
 //var_dump($result);
 //$arrVal = array();
