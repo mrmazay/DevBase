@@ -15,27 +15,30 @@ $ManufactDate= $_POST['ManufactDate'];
 $Type 		= $_POST['Type'];
 $Status 	= $_POST['Status'];
 $MeasureCode= $_POST['MeasureCode'];
-$IsMeasure  = $POST['IsMeasure'];
-$Active  = $POST['Active'];
+$IsMeasure  = $_POST['IsMeasure'];
+$Active  = $_POST['Active'];
 if (($_GET['q']=='update') && (!empty($_GET['SiId']))){
 	
-	$sql="UPDATE `tSI` SET `Name`='$Name',
-	`SN`='$SN',
-	`InvNum`='$InvNum',
-	`DevCode`='$DevCode',
-	`nWorkPlace`='$nWorkPlace',
-	`Placement`='$Placement',
-	`Department`='$Department',
-	`RespPerson`='$RespPerson',
+	$sql="UPDATE `tSI` SET
+    `Name`=        '$Name',
+	`SN`=          '$SN',
+	`InvNum`=      '$InvNum',
+	`DevCode`=     '$DevCode',
+	`nWorkPlace`=  '$nWorkPlace',
+	`Placement`=   '$Placement',
+	`Department`=  '$Department',
+	`RespPerson`=  '$RespPerson',
 	`ManufactDate`='$ManufactDate',
-	`Type`='$Type',
-	`Status`='$Status',
-	`MeasureCode`='$MeasureCode',
-    `IsMeasure`='$IsMeasure',
-    `Active`='$Active'
+	`Type`=        '$Type',
+	`Status`=      '$Status',
+	`MeasureCode`= '$MeasureCode',
+    `IsMeasure`=   '$IsMeasure',
+    `Active`=      '$Active'
 	WHERE SiId=$SiId;";
 	$result = $con->query($sql);
-//	echo $sql;	 
+	echo $sql;
+    echo "\n";
+    echo $Active;
 //	echo $result;
 }
 $SiId=$_GET['SiId'];
@@ -193,9 +196,23 @@ while ($row = $result->fetch_assoc()) {
 									<label for="IsMeasure" class="col-lg-2 control-label">СИ/Не СИ</label>
 									<div class="col-lg-10">
 										<select name="IsMeasure" type="IsMeasure" class="form-control" id="IsMeasure">
-											<option value="1">СИ</option>
-											<option value="0">Не СИ</option>
+                                            <?php
+
+												if ($IsMeasure<>0){
+
+													echo "<option selected value =\"1\">СИ</option>";
+                                                    echo "<option value =\"0\">Не СИ</option>";
+
+												}else{
+
+													echo "<option  value =\"1\">СИ</option>";
+                                                    echo "<option selected value =\"0\">Не СИ</option>";
+												}
+
+
+											?>
 										</select>
+                                        <?php echo $IsMeasure ?>
 									</div>
 								</div>
 								<div class="form-group">
@@ -247,10 +264,10 @@ while ($row = $result->fetch_assoc()) {
 											$result = $con->query($sql);
 											while ($row = $result->fetch_assoc()) {  
 												if ($MeasureCode!=$row['id']){	
-													echo "<option value =".$row['id'].">".$row['Name']."</option>";
+													echo "<option value =".$row['id'].">".htmlspecialchars($row['Name'])."</option>";
 												}else{
 
-													echo "<option selected value = ".$row['id'].">".$row['Name']."</option>";
+													echo "<option selected value = ".$row['id'].">".htmlspecialchars($row['Name'])."</option>";
 												}
 											}
 											?>
@@ -258,6 +275,30 @@ while ($row = $result->fetch_assoc()) {
 									</div>
 								</div>
                                 
+                                <div class="form-group">
+									<label for="Active" class="col-lg-2 control-label">Активен:</label>
+									<div class="col-lg-10">
+										<select name="Active" type="Active" class="form-control" id="Active">
+                                            <?php
+
+												if ($Active<>0){
+
+													echo "<option selected value =\"1\">Активен</option>";
+                                                    echo "<option value =\"0\">Не активен</option>";
+
+												}else{
+
+													echo "<option  value =\"1\">Активен</option>";
+                                                    echo "<option selected value =\"0\">Не активен</option>";
+												}
+
+
+											?>
+										</select>
+
+									</div>
+								</div>
+
 								<div class="form-group">
 									<div class="col-lg-offset-2 col-lg-4">
 										<button type="submit" class="btn btn-primary">Сохранить</button>

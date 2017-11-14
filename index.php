@@ -88,8 +88,8 @@ require 'title.php';
 				<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
 				<div class="form-group">
 					<label for="PovDate" class="col-lg-2 control-label">Дата</label>
-					<div class="col-lg-2">
-						<input type="Text" class="form-control" name="PovDate" id="PovDate" placeholder="2014-01-01">
+					<div class="col-lg-4">
+						<input type="date" class="form-control" name="PovDate" id="PovDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 					</div>
 					<div class="col-lg-2">
 					</div>
@@ -248,7 +248,65 @@ require 'title.php';
 </div><!-- modal-dialog -->
 </div><!-- class-modal-fade -->
 <!--        ***********************************************************-->
-        
+<!--
+//********************************
+//   Modal Add Device
+//********************************
+-->
+<div id="SrvModal" class="modal fade">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
+<h4 class="modal-title">Добавить прибор</h4>
+</div>
+<div class="modal-body">
+
+<div class="panel  panel-primary" id="srv-panel">
+						<div class="panel-heading ">
+							<span class="" id="srv_tbl_title">Добавить прибор</span>
+						</div><!-- panel-heading -->
+						<div class="panel-body">
+						<form class="form-horizontal" role="form" id="srv_frm"  method="POST" >
+			<input type="hidden" class="form-control" name="SiId" id="SrvSiId" value="">
+			<div class="form-group">
+				<label for="Name" class="col-lg-2 control-label">Название</label>
+				<div class="col-lg-10">
+					<input type="Text" class="form-control" name="ServDate" id="ServDate" placeholder="01.01.2014">
+				</div>
+				<div class="col-lg-2">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="Serial" class="col-lg-2 control-label">Зав.№</label>
+				<div class="col-lg-10">
+					<input type="Text" class="form-control" name="ServType" id="ServType" placeholder="ServType">
+				</div>
+				<div class="col-lg-2">
+
+				</div>
+			</div>
+
+
+		</form>
+<!--		<div class="form-group">-->
+			<div class="col-lg-offset-2 col-lg-10">
+				<button  id="add_srv" class="btn btn-primary">Добавить</button>
+			</div>
+<!--		</div>-->
+
+
+						</div><!-- panel body -->
+					</div><!-- panel -->
+
+
+    </div><!-- modal-body -->
+<div class="modal-footer">
+<button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button>
+</div><!-- modal-footer -->
+</div><!-- modal-contenet -->
+</div><!-- modal-dialog -->
+</div><!-- class-modal-fade -->
+<!--        ***********************************************************-->
 </div><!-- Col-md-12 -->
 		</div><!-- Container-fluid -->
 

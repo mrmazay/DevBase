@@ -301,7 +301,7 @@ if ($_GET['q']=='get_pov'){
 
 if($_GET['q']=="add_pov") {
 	$SiId		= $_POST['SiId'];
-	$PovDate   	= $_POST['PovDate'];
+	$PovDate   	= date("Y-m-d", strtotime($_POST['PovDate']));
 	$Doc 		= $_POST['Doc'];
     $dest       ='';
 //Upload file
@@ -354,7 +354,9 @@ if ($_GET['q']=='rm_pov'){
 	$id=$_POST['id'];
 	$SiId=$_POST['SiId'];
     $fname=$_POST['fname'];
+    if (file_exists($fname)){
     unlink($fname);
+    }
 	$sql="delete from tPov where id='".$id."'";
 	$result = $con->query($sql);
 
@@ -411,11 +413,11 @@ if ($_GET['q']=='get_serv'){
 
 if($_GET['q']=="add_serv") {
 	$SiId		= $_POST['SiId'];
-	$ServDate   	= $_POST['ServDate'];
+	$ServDate   	= date("Y-m-d", strtotime($_POST['ServDate']));
 	$ServType 		= $_POST['ServType'];
 	$Executor 		= $_POST['Executor'];
 	$Description 	= $_POST['Description'];
-	$NextDate 		= $_POST['NextDate'];
+	$NextDate 		= date("Y-m-d", strtotime($_POST['NextDate']));
 
 
 	$sql="INSERT INTO tService (`SiId`,`ServDate`,`ServType`,`Executor`,`Description`,`NextDate`)
