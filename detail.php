@@ -450,7 +450,7 @@ while ($row = $result->fetch_assoc()) {
 				<div class="form-group">
 					<label for="PovDate" class="col-lg-2 control-label">Дата</label>
 					<div class="col-lg-2">
-						<input type="Text" class="form-control" name="PovDate" id="PovDate" placeholder="2014-01-01">
+						<input type="Text" class="form-control" name="PovDate" id="PovDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 					</div>
 					<div class="col-lg-2">
 					</div>
@@ -514,7 +514,7 @@ while ($row = $result->fetch_assoc()) {
 			<div class="form-group">
 				<label for="SiId" class="col-lg-2 control-label">Дата</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="ServDate" id="ServDate" placeholder="01.01.2014">
+					<input type="Text" class="form-control" name="ServDate" id="ServDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 				</div>
 				<div class="col-lg-2">
 				</div>
@@ -561,7 +561,7 @@ while ($row = $result->fetch_assoc()) {
 			<div class="form-group">
 				<label for="NextDate" class="col-lg-2 control-label">Дата следующего</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="NextDate" id="NextDate" placeholder="01.01.2014">
+					<input type="Text" class="form-control" name="NextDate" id="NextDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 				</div>
 				
 			</div>
