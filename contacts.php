@@ -1,7 +1,6 @@
 <?php
-require "title.php";
 require "db.php";
-
+require "title.php";
 ?>
 
 <div class="container">
@@ -18,25 +17,14 @@ require "db.php";
 					<span class="" id="tbl_title">Контакты</span>
 				</div>
 				<div class="panel-body">
-					<form class="form-horizontal" role="form" id="pkg_frm"  method="POST" >
+					<form class="form-horizontal" role="form" id="contacts_frm"  method="POST" >
 						<input type="hidden" class="form-control" name="SiId" id="SiId" value=<?php echo "'".$SiId."'"; ?>>
 						<div class="form-group">
 							<label for="dev" class="col-lg-2 control-label">Прибор</label>
 							<div class="col-lg-7">
 								<select type="Text" class="form-control" name="Dev" id="Dev" placeholder="Dev">
 								<option selected value="">---</option>
-								<?php
-											$sql="select * from tResposible order by id asc";
-											$query = $con->query($sql);
-											while ($rowList = $query->fetchArray()) { 
-												if ($RespPerson!=$rowList['id']){	 
-													echo "<option value =".$rowList['id'].">".$rowList['RespPerson']."</option>";
-												}else{
 
-													echo "<option selected value =".$rowList['id'].">".$rowList['RespPerson']."</option>";	
-												}
-											}
-											?>
 								</select>
 							</div>
 							<div class="col-lg-2">
@@ -81,6 +69,7 @@ require "db.php";
 						<thead>
 							<th data-field="id" data-sortable="true"> id</th>
 							<th data-field="SiId" data-sortable="true"> SiId</th>
+                            <th data-field="SiName" data-sortable="true">Прибор</th>
 							<th data-field="Name" data-sortable="true">Организация</th>
 							<th data-field="Org" data-sortable="true">Описание</th>
 							<th data-field="Action">Action</th>

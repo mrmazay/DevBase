@@ -178,7 +178,7 @@ require 'title.php';
 			<div class="form-group">
 				<label for="ServType" class="col-lg-2 control-label">Вид</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="ServType" id="ServType" placeholder="ServType">
+					<input type="Text" class="form-control" name="ServType" id="ServType" placeholder="ServType" value="0">
 				</div>
 				<div class="col-lg-2">
 
@@ -187,7 +187,7 @@ require 'title.php';
 			<div class="form-group">
 				<label for="Description" class="col-lg-2 control-label">Описание</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="Description" id="Description" placeholder="Description" value="Метрологическая аттестация">
+					<input type="Text" class="form-control" name="Description" id="Description" placeholder="Description">
 				</div>
 				<div class="col-lg-2">
 
@@ -253,7 +253,7 @@ require 'title.php';
 //   Modal Add Device
 //********************************
 -->
-<div id="SrvModal" class="modal fade">
+<div id="add_si_modal" class="modal fade">
 <div class="modal-dialog">
 <div class="modal-content">
 <div class="modal-header"><button class="close" type="button" data-dismiss="modal">×</button>
@@ -261,17 +261,17 @@ require 'title.php';
 </div>
 <div class="modal-body">
 
-<div class="panel  panel-primary" id="srv-panel">
+<div class="panel  panel-primary" id="add_si-panel">
 						<div class="panel-heading ">
-							<span class="" id="srv_tbl_title">Добавить прибор</span>
+							<span class="" id="si_tbl_title">Добавить прибор</span>
 						</div><!-- panel-heading -->
 						<div class="panel-body">
-						<form class="form-horizontal" role="form" id="srv_frm"  method="POST" >
-			<input type="hidden" class="form-control" name="SiId" id="SrvSiId" value="">
+						<form class="form-horizontal" role="form" id="add_si_frm"  method="POST" >
+<!--			<input type="hidden" class="form-control" name="SiId" id="SrvSiId" value="">-->
 			<div class="form-group">
 				<label for="Name" class="col-lg-2 control-label">Название</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="ServDate" id="ServDate" placeholder="01.01.2014">
+					<input type="Text" class="form-control" name="Name" id="Name">
 				</div>
 				<div class="col-lg-2">
 				</div>
@@ -279,7 +279,7 @@ require 'title.php';
 			<div class="form-group">
 				<label for="Serial" class="col-lg-2 control-label">Зав.№</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="ServType" id="ServType" placeholder="ServType">
+					<input type="Text" class="form-control" name="SN" id="SN" >
 				</div>
 				<div class="col-lg-2">
 
@@ -290,7 +290,7 @@ require 'title.php';
 		</form>
 <!--		<div class="form-group">-->
 			<div class="col-lg-offset-2 col-lg-10">
-				<button  id="add_srv" class="btn btn-primary">Добавить</button>
+				<button  id="add_si_btn" class="btn btn-primary">Добавить</button>
 			</div>
 <!--		</div>-->
 
@@ -342,12 +342,14 @@ $("#srv_tbl").bootstrapTable({});
 
         $('#count').text($rowCount+' записей.');
     },
-    onSearch: function () {
+    onPostBody: function () {
         var $rowCount=$('#table').bootstrapTable('getData').length;
          $('#count').text($rowCount+' записей.');
     }
 });
-
+$('#table').on('all.bs.table', (e, name, args) => {
+        console.log(name, args);
+    });
 
 //*************************************
 //     Modal Add & Remove Calibration
@@ -432,6 +434,17 @@ $("#table").on('click','.srv-btn',function(e){
 		});
 	});
 
+//*************************************
+//     Modal Add SI
+//*************************************
+    $("#add_si_btn").click(function(e){
+		$.post( "get_main.php?q=add_si", $( "#add_si_frm" ).serialize())
+		.done(function( data ) {
+
+			alert(data);
+		});
+	});
+
 
 //***********************Missed CLick****************************************************
     $("#missed").change(function(){
@@ -443,7 +456,8 @@ $("#table").on('click','.srv-btn',function(e){
 
 	//	return true;
 		});
-		}
+
+		}else{
 		$.post( "get_main.php?q=get_main")
 		.done(function( data ) {
 			var $table = $('#table');
@@ -451,6 +465,9 @@ $("#table").on('click','.srv-btn',function(e){
 
 	//	return false;
 	});
+        }
+ //       var $rowCount=$('#table').bootstrapTable('getData').length;
+   //      $('#count').text($rowCount+' записей.');
 	});
 
 

@@ -2,45 +2,63 @@
 require 'db.php';
 require 'title.php';
 
-$SiId		= $_POST['SiId']; 
-$Name   	= $_POST['Name'];
-$SN 		= $_POST['SN'];
-$InvNum 	= $_POST['InvNum'];
-$DevCode 	= $_POST['DevCode'];
-$nWorkPlace = $_POST['nWorkPlace'];
-$Placement 	= $_POST['Placement'];
-$Department = $_POST['Department'];
-$RespPerson = $_POST['RespPerson'];
+$SiId		 = $_POST['SiId']; //$intLat = !empty($intLat) ? "'$intLat'" : NULL;
+$Name   	 = $_POST['Name'];
+$SN 		 = $_POST['SN'];
+$InvNum 	 = $_POST['InvNum'];
+$DevCode 	 = $_POST['DevCode'];
+$nWorkPlace  = $_POST['nWorkPlace'];
+$Placement 	 = $_POST['Placement'];
+$Department  = $_POST['Department'];
+$RespPerson  = $_POST['RespPerson'];
 $ManufactDate= $_POST['ManufactDate'];
-$Type 		= $_POST['Type'];
-$Status 	= $_POST['Status'];
-$MeasureCode= $_POST['MeasureCode'];
-$IsMeasure  = $_POST['IsMeasure'];
-$Active  = $_POST['Active'];
+$Type 		 = $_POST['Type'];
+$Status 	 = $_POST['Status'];
+$MeasureCode = $_POST['MeasureCode'];
+$IsMeasure   = $_POST['IsMeasure'];
+$PovPeriod   = $_POST['PovPeriod'];
+$Active      = $_POST['Active'];
+
+
+//<!--    ***************************************************************************************  -->
+//<!--                                        Main update                                           -->
+//<!--    ***************************************************************************************  -->
+
 if (($_GET['q']=='update') && (!empty($_GET['SiId']))){
 	
-	$sql="UPDATE `tSI` SET
-    `Name`=        '$Name',
-	`SN`=          '$SN',
-	`InvNum`=      '$InvNum',
-	`DevCode`=     '$DevCode',
-	`nWorkPlace`=  '$nWorkPlace',
-	`Placement`=   '$Placement',
-	`Department`=  '$Department',
-	`RespPerson`=  '$RespPerson',
-	`ManufactDate`='$ManufactDate',
-	`Type`=        '$Type',
-	`Status`=      '$Status',
-	`MeasureCode`= '$MeasureCode',
-    `IsMeasure`=   '$IsMeasure',
-    `Active`=      '$Active'
-	WHERE SiId=$SiId;";
-	$result = $con->query($sql);
-	echo $sql;
-    echo "\n";
-    echo $Active;
-//	echo $result;
+$sql="UPDATE `tSI` SET
+    `Name`=        ?,
+	`SN`=          ?,
+	`InvNum`=      ?,
+	`DevCode`=     ?,
+	`nWorkPlace`=  ?,
+	`Placement`=   ?,
+	`Department`=  ?,
+	`RespPerson`=  ?,
+	`ManufactDate`=?,
+	`Type`=        ?,
+	`Status`=      ?,
+	`MeasureCode`= ?,
+    `IsMeasure`=   ?,
+    `PovPeriod`=   ?,
+    `Active`=      ?
+	WHERE SiId=    ?;";
+if ($IsMeasure && !$PovPeriod){
+    $PovPeriod=12;
+  echo "<script>alert('Warning! Period set to 12.')</script>";
 }
+$stmt = mysqli_prepare($con, $sql);
+$stmt->bind_param("sssssiiisiiiiiii",$Name,$SN,$InvNum,$DevCode,$nWorkPlace,$Placement,$Department,$RespPerson,$ManufactDate,$Type,$Status,$MeasureCode,$IsMeasure,$PovPeriod,$Active,$SiId);
+$result = $stmt->execute();
+if (!$result){
+    echo $sqlю."\n";
+    echo $Active;
+    var_dump ($result);
+    echo "<script>alert('Update error! Check input data.')</script>";
+}
+
+}//Update
+
 $SiId=$_GET['SiId'];
 $sql="SELECT *
 FROM tSI AS SI
@@ -63,9 +81,11 @@ while ($row = $result->fetch_assoc()) {
 	$Status 	 = $row['Status'];
 	$MeasureCode = $row['MeasureCode'];
     $IsMeasure   = $row['IsMeasure'];
+    $PovPeriod   = $row['PovPeriod'];
     $Active      = $row['Active'];
 }
 ?>
+
 
 <div class="container-fluid">
 	<div class="col-md-12">
@@ -110,7 +130,7 @@ while ($row = $result->fetch_assoc()) {
 									<label for="RespPerson" class="col-lg-2 control-label">Ответственное лицо</label>
 									<div class="col-lg-10">
 										<select name="RespPerson" type="RespPerson" class="form-control" id="RespPerson">
-											<option value="">---</option>
+<!--											<option value="">---</option>-->
 											<?php
 											$sql="select * from tResposible order by id asc";
 											$result = $con->query($sql);
@@ -130,7 +150,7 @@ while ($row = $result->fetch_assoc()) {
 									<label for="Placement" class="col-lg-2 control-label">Расположение</label>
 									<div class="col-lg-10">
 										<select name="Placement" type="Placement" class="form-control" id="Placement">
-											<option value="">---</option>
+<!--											<option value="">---</option>-->
 											<?php
 											$sql="select * from tPlacement order by id asc";
 											$result = $con->query($sql);
@@ -151,7 +171,7 @@ while ($row = $result->fetch_assoc()) {
 									<label for="Department" class="col-lg-2 control-label">Подразделение</label>
 									<div class="col-lg-10">
 										<select name="Department" type="Department" class="form-control" id="Department">
-											<option value="">---</option>
+<!--											<option value="">---</option>-->
 											<?php
 											$sql="select * from tDepartments order by id asc";
 											$result = $con->query($sql);
@@ -173,7 +193,7 @@ while ($row = $result->fetch_assoc()) {
 									<label for="Type" class="col-lg-2 control-label">Тип</label>
 									<div class="col-lg-10">
 										<select name="Type" type="Type" class="form-control" id="Type">
-											<option value="">---</option>
+<!--											<option value="">---</option>-->
 											<?php
 
 											$sql="select * from tTypes order by id asc";
@@ -212,14 +232,28 @@ while ($row = $result->fetch_assoc()) {
 
 											?>
 										</select>
-                                        <?php echo $IsMeasure ?>
+
+									</div>
+								</div>
+                                <div class="form-group">
+									<label for="PovPeriod" class="col-lg-2 control-label">Межповерочн. интервал(мес.)</label>
+									<div class="col-lg-10">
+										<input type="Text" class="form-control" name="PovPeriod" id="PovPeriod" placeholder="12" value="<?php
+                                                                                                                                 if (!empty($PovPeriod))
+                                                                                                                                     {
+                                                                                                                                     echo $PovPeriod;
+                                                                                                                                     }else{
+                                                                                                                                     echo "0";
+                                                                                                                                 }
+                                                                                                                                 ?>">
+
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="Status" class="col-lg-2 control-label">Состояние</label>
 									<div class="col-lg-10">
 										<select name="Status" type="Status" class="form-control" id="Status">
-											<option value="">---</option>
+<!--											<option value="">---</option>-->
 											<?php
 											$sql="select * from tStatus order by id asc";
 											$result = $con->query($sql);
@@ -239,26 +273,40 @@ while ($row = $result->fetch_assoc()) {
 								<div class="form-group">
 									<label for="ManufactDate" class="col-lg-2 control-label">Дата изготовления</label>
 									<div class="col-lg-10">
-										<input type="date/month/week/time" class="form-control" name="ManufactDate" id="ManufactDate" placeholder="01.01.2014" value="<?php echo $ManufactDate;?>">
+										<input type="date/month/week/time" class="form-control" name="ManufactDate" id="ManufactDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01" value="<?php echo $ManufactDate;?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="InvNum" class="col-lg-2 control-label">Инв.№</label>
 									<div class="col-lg-10">
-										<input type="Text" class="form-control" name="InvNum" id="InvNum" placeholder="#" value="<?php echo $InvNum;?>">
+										<input type="Text" class="form-control" name="InvNum" id="InvNum" placeholder="#" value="<?php
+                                                                                                                                 if (!empty($InvNum))
+                                                                                                                                     {
+                                                                                                                                     echo $InvNum;
+                                                                                                                                     }else{
+                                                                                                                                     echo "-";
+                                                                                                                                 }
+                                                                                                                                 ?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="DevCode" class="col-lg-2 control-label">Код оборудования</label>
 									<div class="col-lg-10">
-										<input type="Text" class="form-control" name="DevCode" id="DevCode" placeholder="#" value="<?php echo $DevCode; ?>">
+										<input type="Text" class="form-control" name="DevCode" id="DevCode" placeholder="#" value="<?php
+                                                                                                                                 if (!empty($DevCode))
+                                                                                                                                     {
+                                                                                                                                     echo $DevCode;
+                                                                                                                                     }else{
+                                                                                                                                     echo "-";
+                                                                                                                                 }
+                                                                                                                                 ?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="MeasureCode" class="col-lg-2 control-label">Код вида измерений</label>
 									<div class="col-lg-10">
 										<select name="MeasureCode" type="MeasureCode" class="form-control" id="MeasureCode">
-											<option value="">---</option>
+<!--											<option value="">---</option>-->
 											<?php
 											$sql="select * from tMeasureCodes order by id asc";
 											$result = $con->query($sql);
@@ -713,6 +761,18 @@ $("#pov_frm").submit(function(e){
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
 	});
+      $("#serv_tbl").on('click','.rm-serv',function(e){
+		var $id = $(this).attr('value');
+        var $SiId=$( '#SiId' ).attr('value');
+		$.post( "get_main.php?q=rm_serv", {id:$id , SiId: $SiId})
+		.done(function( data ) {
+
+			var $table = $('#serv_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
+	});
+
+
 
 });
 </script> 
