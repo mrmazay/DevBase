@@ -70,8 +70,6 @@ ORDER BY Persons.MCNum DESC";
 //OR Persons.MCNum=7711003
 // AND Persons.MCNum=7711003
   $res = odbc_exec($con, $sql);
-
-
   ?>
 
 
@@ -99,67 +97,50 @@ ORDER BY Persons.MCNum DESC";
       <div class="row">
         <div class="col-md-12">
           <div class="table-responsive">
+
+
+ <div id="toolbar" class="btn-group">
+
+    <button type="button" id="export_btn" class="btn btn-default">
+        <i class="glyphicon glyphicon-export"></i>
+    </button>
+
+</div>
             <table id="table" class="table table-striped table-bordered table-condensed"
-                    data-height="460" data-search="true" data-show-print="true" data-show-columns="true" data-mobile-responsive="true" >
+                   data-height="460"
+                   data-search="true"
+                   data-show-print="true"
+                   data-show-refresh="true"
+                   data-show-columns="true"
+                   data-show-export="true"
+                   data-mobile-responsive="true"
+                   data-toolbar="#toolbar"
+                   data-url="get_main.php?q=get_main">
               <thead>
                 <tr >
-                  <th data-sortable="true">#</th>
+
+                  <!-- <th data-sortable="true">#</th> -->
                   <th data-field="MCNum" data-sortable="true" >№ЭМК</th>
-                  <th data-sortable="true">Фамилия</th>
-                  <th data-sortable="true">Имя</th>
-                  <th data-sortable="true">Отчество</th>
-                  <th data-sortable="true">Пол</th>
-                  <th data-sortable="true">Последний визит</th>
-                  <th data-sortable="true">Дата рождения</th>
-                  <th data-sortable="true">Тел.</th>
-                  <th data-sortable="true">Адрес</th>
-                  <th data-sortable="true">Гражданство</th>
-                  <th data-sortable="true">Email</th>
-                  <th data-sortable="true">Раса</th>
-                  <th data-sortable="true">Примечание</th>
-                  <th data-sortable="true">Паспорт:серия</th>
-                  <th data-sortable="true">Паспорт:№</th>
-                  <th data-sortable="true">Паспорт:выдан</th>
-                  <th data-sortable="true">Паспорт:дата выдачи</th>
-                  <th >Action</th>
+                  <th data-field="LastName" data-sortable="true">Фамилия</th>
+                  <th data-field="FirstName" data-sortable="true">Имя</th>
+                  <th data-field="MiddleName" data-sortable="true">Отчество</th>
+                  <th data-field="Sex" data-sortable="true">Пол</th>
+                  <th data-field="CrTime" data-sortable="true">Последний визит</th>
+                  <th data-field="BirthDate" data-sortable="true">Дата рождения</th>
+                  <th data-field="PhoneNumber" data-sortable="true">Тел.</th>
+                  <th data-field="Address" data-sortable="true">Адрес</th>
+                  <th data-field="AddCode2" data-sortable="true">Гражданство</th>
+                  <th data-field="Email" data-sortable="true">Email</th>
+                  <th data-field="PropertyValue" data-sortable="true">Раса</th>
+                  <th data-field="Memo" data-sortable="true">Примечание</th>
+                  <th data-field="Series" data-sortable="true">Паспорт:серия</th>
+                  <th data-field="Number" data-sortable="true">Паспорт:№</th>
+                  <th data-field="IssuePlace" data-sortable="true">Паспорт:выдан</th>
+                  <th data-field="IssueDate" data-sortable="true">Паспорт:дата выдачи</th>
+                  <th data-field="Action">Action</th>
                 </tr>
               </thead>
-              <tbody>
-                <?php    $i=1; while ($rowList = odbc_fetch_array($res)) {
 
-				$sex=$rowList['Sex'];
-				if ($sex=='5233'){
-					$sex='М';
-				}
-				if ($sex=='5234'){
-					$sex='Ж';
-				}
-				?>
-                <tr>
-                  <td><?php echo $i                         ?></td>
-                  <td><?php echo $rowList['MCNum'];         ?></td>
-                  <td><?php echo $rowList['LastName'];      ?></td>
-                  <td><?php echo $rowList['FirstName'];     ?></td>
-                  <td><?php echo $rowList['MiddleName'];    ?></td>
-                  <td><?php echo $sex 					    ?></td>
-                  <td><?php echo $rowList['CrTime'];        ?></td>
-                  <td><?php echo $rowList['BirthDate'];     ?></td>
-                  <td><?php echo $rowList['PhoneNumber'];   ?></td>
-                  <td><?php echo $rowList['Address'];       ?></td>
-                  <td><?php echo $rowList['AddCode2'];      ?></td>
-                  <td><?php echo $rowList['Email'];         ?></td>
-                  <td><?php echo $rowList['PropertyValue']; ?></td>
-                  <td><?php echo $rowList['Memo'];          ?></td>
-                  <td><?php echo $rowList['Series'];        ?></td>
-                  <td><?php echo $rowList['Number'];        ?></td>
-                  <td><?php echo $rowList['IssuePlace'];    ?></td>
-                  <td><?php echo $rowList['IssueDate'];     ?></td>
-                  <td><?php echo ('<a class="btn btn-primary btn-xs"  href=detail.php?MCNum='.$rowList['MCNum'].'>Detail</a>'); ?></td>
-                </tr>
-                <?php
-                $i++;
-              }   ?>
-            </tbody>
           </table>
         </div>
       </div>
@@ -174,11 +155,11 @@ ORDER BY Persons.MCNum DESC";
 
 
 <!-- <script src="js/jquery-1.11.1.min.js"></script> -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="js/bootstrap-table.js"></script>
-<script src="https://rawgit.com/yaronyam/bootstrap-table/feature/print/src/extensions/print/bootstrap-table-print.js"></script>
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+<!--<script src="js/bootstrap-table.js"></script>-->
+<!--<script src="https://rawgit.com/yaronyam/bootstrap-table/feature/print/src/extensions/print/bootstrap-table-print.js"></script>-->
 <script type="text/javascript">
-
+$(document).ready(function(){
  var $table = $('#table');
  $table.bootstrapTable({
   search: true,
@@ -193,20 +174,31 @@ ORDER BY Persons.MCNum DESC";
   singleSelect: true,
   striped: true,
   detailView: false,
+onLoadSuccess: function (e,data) {
+        var $rowCount=$('#table').bootstrapTable('getData').length;
 
+        $('#count').text($rowCount+' записей.');
+       // $('#table').tableExport({type:'excel'});
+    },
+    onPostBody: function () {
+        var $rowCount=$('#table').bootstrapTable('getData').length;
+         $('#count').text($rowCount+' записей.');
+    }
 });
-</script>
-<script type="text/javascript">
-  $(document).ready(function () {
-var $rowCount = $('#table tr').length;
-$('#count').text($rowCount+' записей.');
-$('#table').DataTable( {
-        dom: 'Bfrtip',
-        buttons: [
-            'print'
-        ]
-    } );
+
+// var $rowCount = $('#table tr').length;
+// $('#count').text($rowCount+' записей.');
+//$('#table').DataTable( {
+//        dom: 'Bfrtip',
+//        buttons: [
+//            'print'
+//        ]
+//    } );
+$('#export_btn').click(function(){
+  $('#table').tableExport({type:'excel'});
+})
   });
+
 </script>
 </body>
 </html>

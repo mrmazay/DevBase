@@ -4,40 +4,9 @@ require 'db.php';
 if ($_GET['q']=='auth'){
 $login= $_POST['login'];
 $pass=  $_POST['password'];
-
 }
-
 $arrVal = array();
-if ($_GET['q']=='get_main'){
-	// $sql="SELECT SI.SiId,
- //        SI.Name,
- //        SI.IsMeasure,
- //        SI.SN,
- //        SI.InvNum,
- //        SI.DevCode,
- //        SI.nWorkPlace,
- //        Pl.Placement,
- //        d.Department,
- //        r.RespPerson,
- //        YEAR(SI.ManufactDate) AS ManufactDate,
- //        t.Type,
- //        s.Status,
- //        p.PovDate + INTERVAL SI.PovPeriod month AS NextPov
- //        FROM tSI AS SI
- //        LEFT OUTER JOIN
- //        tResposible  AS r ON SI.RespPerson = r.id
- //        LEFT OUTER JOIN
- //        tPlacement   as Pl on SI.Placement=Pl.id
- //        LEFT OUTER JOIN
- //        tDepartments as d on SI.Department=d.id
- //        LEFT OUTER JOIN
- //        tTypes       as t    ON SI.Type=t.id
- //        LEFT OUTER JOIN
- //        tStatus      as s    ON SI.Status=s.id
- //        LEFT OUTER JOIN tPov  as p on p.SiId=SI.SiId
- //        WHERE p.PovDate=(select max(tPov.PovDate) FROM tPov WHERE tPov.SiId=SI.SiId) OR p.PovDate IS NULL
- //        ORDER BY SI.SiId desc";
-
+if (!empty($_GET['q']) && $_GET['q']=='get_main'){
 	$sql="SELECT SI.SiId,
 				SI.Name,
 				SI.IsMeasure,
@@ -51,7 +20,8 @@ if ($_GET['q']=='get_main'){
 				YEAR(SI.ManufactDate) AS ManufactDate,
 				t.Type,
 				s.Status,
-				MAX(p.PovDate) + INTERVAL SI.PovPeriod month AS NextPov
+				MAX(p.PovDate) + INTERVAL SI.PovPeriod month AS NextPov,
+				SI.MeasureCode
 		FROM tSI AS SI
 		LEFT OUTER JOIN tResposible  AS r  ON SI.RespPerson = r.id
 		LEFT OUTER JOIN tPlacement   as Pl on SI.Placement=Pl.id
@@ -62,18 +32,14 @@ if ($_GET['q']=='get_main'){
 		GROUP BY SI.SiId
 		ORDER BY SI.SiId desc";
 
-
 		$result = $con->query($sql);
-//var_dump($result);
-//$arrVal = array();
-
 	$i=1;
-	while ($row = $result->fetch_assoc()) {
+	while ($row = $result->fetch()) {
         if ($row['IsMeasure']=='0'){$row['NextPov']='-';}
 		$name = array(
 			'num' => $i,
 			'SiId'=> $row['SiId'],
-			'Name'=> $row['Name'],
+			'Name'=> '<a href=detail.php?SiId='.$row['SiId'].'>'.$row['Name'].'</a>',
 			'SN'=> $row['SN'],
 			'DevCode'=> $row['DevCode'],
 			'nWorkPlace'=> $row['nWorkPlace'],
@@ -85,9 +51,10 @@ if ($_GET['q']=='get_main'){
 			'IsMeasure'=> $row['IsMeasure'],
 			'NextPov'=> $row['NextPov'],
 			'ManufactDate'=> $row['ManufactDate'],
+			'MeasureCode'=> $row['MeasureCode'],
 			'Action'=>'<a class="btn btn-primary btn-xs"  href=detail.php?SiId='.$row['SiId'].'>Detail</a><br><button class="btn btn-info btn-xs pov-btn" type="button" data-toggle="modal" data-target="#PovModal" id='.$row['SiId'].' siname="'.$row['Name'].'('.$row['SN'].')">Pov</button><button class="btn btn-info btn-xs srv-btn" type="button" data-toggle="modal" data-target="#SrvModal" id='.$row['SiId'].' siname="'.$row['Name'].'('.$row['SN'].')">Srv</button>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -95,16 +62,17 @@ if ($_GET['q']=='get_main'){
 	}
 	echo  json_encode($arrVal);
 }
-//*********************************************************
+//*************************************************************************************************
+//**********************************************************
 //                      Package
 //**********************************************************
 
-if ($_GET['q']=='get_pkg'){
+if (!empty($_GET['q']) && $_GET['q']=='get_pkg'){
 	$SiId=$_GET['SiId'];
-	$sql="select * from tPackage where SiId='".$SiId."'";
+	$sql="select * from tPackage where SiId='$SiId'";
 
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -113,7 +81,7 @@ if ($_GET['q']=='get_pkg'){
 			'Count'=> $row['Count'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-pkg" id="rm-pkg-btn" value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	 //echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -129,13 +97,14 @@ if($_GET['q']=="add_pkg") {
 	$units 		= $_POST['units'];
 
 	$sql="INSERT INTO tPackage (`SiId`,`Name`,`Count`)
-						VALUES ($SiId,'$Name','$Count $units')";
+						VALUES ('$SiId','$Name','$Count $units')";
 	$result = $con->query($sql);
 
-	$sql="select * from tPackage where SiId=$SiId";
-
+	$sql="select * from tPackage where SiId='$SiId'";
+	//var_dump($sql);
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	//var_dump($result);
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -144,7 +113,7 @@ if($_GET['q']=="add_pkg") {
 			'Count'=> $row['Count'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-pkg " id="rm-pkg-btn" value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	 //echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -159,9 +128,9 @@ if ($_GET['q']=='rm_pkg'){
 	$sql="delete from tPackage where id='".$id."'";
 	$result = $con->query($sql);
 
-	$sql="select * from tPackage where SiId='".$SiId."'";
+	$sql="select * from tPackage where SiId='$SiId'";
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -170,7 +139,7 @@ if ($_GET['q']=='rm_pkg'){
 			'Count'=> $row['Count'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-pkg " id="rm-pkg-btn" value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	 //echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -180,16 +149,17 @@ if ($_GET['q']=='rm_pkg'){
 }
 
 
-//*********************************************************
+//*************************************************************************************************
+//**********************************************************
 //                      Character
 //**********************************************************
 //$arrVal = array();
-if ($_GET['q']=='get_char'){
+if (!empty($_GET['q']) && $_GET['q']=='get_char'){
 	$SiId=$_GET['SiId'];
-	$sql="select * from tCharacter where SiId='".$SiId."'";
+	$sql="select * from tCharacter where SiId='$SiId'";
 
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -198,7 +168,7 @@ if ($_GET['q']=='get_char'){
 			'Value'=> $row['Value'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-char"  id="rm-char-btn" value="'.$row['id'].'">Del</a> '
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -214,15 +184,15 @@ if($_GET['q']=="add_char") {
 
 
 	$sql="INSERT INTO tCharacter (`SiId`,`Charact`,`Value`)
-						  VALUES ($SiId,'$Charact','$Value')";
-						//  echo $sql;
+						  VALUES ('$SiId','$Charact','$Value')";
+	//  echo $sql;
 
 	$result = $con->query($sql);
 //	echo $result;
-	$sql="select * from tCharacter where SiId=$SiId";
+	$sql="select * from tCharacter where SiId='$SiId'";
 	//echo $sql;
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -231,7 +201,7 @@ if($_GET['q']=="add_char") {
 			'Value'=> $row['Value'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-char"  id="rm-char-btn" value="'.$row['id'].'">Del</a> '
 			);
- 	 		 	 			echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -242,15 +212,15 @@ if($_GET['q']=="add_char") {
 
 
 
-if ($_GET['q']=='rm_char'){
+if (!empty($_GET['q']) && $_GET['q']=='rm_char'){
 	$id=$_POST['id'];
 	$SiId=$_POST['SiId'];
 	$sql="delete from tCharacter where id='".$id."'";
 	$result = $con->query($sql);
 
-	$sql="select * from tCharacter where SiId='".$SiId."'";
+	$sql="select * from tCharacter where SiId='$SiId'";
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -259,7 +229,7 @@ if ($_GET['q']=='rm_char'){
 			'Value'=> $row['Value'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-char"  id="rm-char-btn" value="'.$row['id'].'">Del</a> '
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 
@@ -270,16 +240,17 @@ if ($_GET['q']=='rm_char'){
 }
 
 
-//*********************************************************
+//*************************************************************************************************
+//**********************************************************
 //                      Calibration
 //**********************************************************
 //$arrVal = array();
-if ($_GET['q']=='get_pov'){
+if (!empty($_GET['q']) && $_GET['q']=='get_pov'){
 	$SiId=$_GET['SiId'];
-	$sql="select * from tPov where SiId='".$SiId."'";
+	$sql="select * from tPov where SiId='$SiId'";
 
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -289,7 +260,7 @@ if ($_GET['q']=='get_pov'){
             'File'=>'<a href="'.$row['File'].'">'.$row['File'].'</a> ',
 			'Action'=>'<a class="btn btn-primary btn-xs rm-pov"  id="rm-pov-btn" data-fname="'.$row['File'].'"  value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -299,7 +270,7 @@ if ($_GET['q']=='get_pov'){
 }
 
 
-if($_GET['q']=="add_pov") {
+if(!empty($_GET['q']) && $_GET['q']=="add_pov") {
 	$SiId		= $_POST['SiId'];
 	$PovDate   	= date("Y-m-d", strtotime($_POST['PovDate']));
 	$Doc 		= $_POST['Doc'];
@@ -308,7 +279,7 @@ if($_GET['q']=="add_pov") {
 //Upload file
 if (!empty($_FILES['filename']['name'])){
 $uploadfile = $_FILES['filename']['name'];
-$dest ='./uploads/'.date("Y", strtotime($_POST['PovDate'])).'/'.md5(date("Y-m-d H:i:s")).'.'.substr($uploadfile, -3);
+$dest ='./uploads/'.date("Y", strtotime($_POST['PovDate'])).'/'.md5(date("Y-m-d H:i:s")).'.'.substr($uploadfile, strrpos($uploadfile, '.') + 1);
 if(!file_exists($destdir)){
     mkdir($destdir);
 }
@@ -323,18 +294,20 @@ if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
 
 
 	$sql="INSERT INTO tPov (`SiId`,`PovDate`,`Doc`,`File`)
-					  VALUES ($SiId,'$PovDate','$Doc','$dest')";
+					  VALUES ('$SiId','$PovDate','$Doc','$dest')";
 
 	$result = $con->query($sql);
 
     $sql="INSERT INTO tService (`SiId`,`ServDate`,`Executor`,`Description`)
-						VALUES ($SiId,'$PovDate','А.А. Леонов','Метрологическая аттестация')";
+						VALUES ('$SiId','$PovDate','А.А. Леонов','Метрологическая аттестация')";
 
 	$result = $con->query($sql);
 
-	$sql="select * from tPov where SiId=$SiId";
+	$sql="select * from tPov where SiId='$SiId'";
+	//echo $sql;
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	//var_dump($result);
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -344,7 +317,7 @@ if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
             'File'=>'<a href="'.$row['File'].'">'.$row['File'].'</a> ',
 			'Action'=>'<a class="btn btn-primary btn-xs rm-pov"  id="rm-pov-btn" data-fname="'.$row['File'].'"  value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -354,7 +327,7 @@ if (!move_uploaded_file($_FILES['filename']['tmp_name'], $dest)) {
 }
 
 
-if ($_GET['q']=='rm_pov'){
+if (!empty($_GET['q']) && $_GET['q']=='rm_pov'){
 	$id=$_POST['id'];
 	$SiId=$_POST['SiId'];
     $fname=$_POST['fname'];
@@ -364,9 +337,9 @@ if ($_GET['q']=='rm_pov'){
 	$sql="delete from tPov where id='".$id."'";
 	$result = $con->query($sql);
 
-	$sql="select * from tPov where SiId='".$SiId."'";
+	$sql="select * from tPov where SiId='$SiId'";
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -376,7 +349,7 @@ if ($_GET['q']=='rm_pov'){
             'File'=>'<a href="'.$row['File'].'">'.$row['File'].'</a> ',
 			'Action'=>'<a class="btn btn-primary btn-xs rm-pov"  id="rm-pov-btn" data-fname="'.$row['File'].'" value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -385,27 +358,31 @@ if ($_GET['q']=='rm_pov'){
 	echo  json_encode($arrVal);
 }
 
-//*********************************************************
+//*************************************************************************************************
+//**********************************************************
 //                      Service
 //**********************************************************
-if ($_GET['q']=='get_serv'){
+if (!empty($_GET['q']) && $_GET['q']=='get_serv'){
 	$SiId=$_GET['SiId'];
-	$sql="select * from tService where SiId='".$SiId."'";
-
+	$sql="select `S`.`id`,`S`.`ServDate`,`T`.`Name`,`S`.`Description`,`S`.`Executor`,`T`.`Period` ,`S`.`NextDate`
+			from `tService` as S
+			LEFT OUTER JOIN `tServTypes` AS T ON `S`.`ServType`=`T`.`id`
+			where `S`.`SiId`='$SiId'";
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
 			'id'=> $row['id'],
 			'ServDate'=> $row['ServDate'],
-			'ServType'=> $row['ServType'],
+			'Name'=> $row['Name'],
 			'Executor'=> $row['Executor'],
 			'Description'=> $row['Description'],
+			'Period'=> $row['Period'],
 			'NextDate'=> $row['NextDate'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-serv"  id="rm-serv-btn" value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -415,35 +392,43 @@ if ($_GET['q']=='get_serv'){
 }
 
 
-if($_GET['q']=="add_serv") {
-	$SiId		= $_POST['SiId'];
+if(!empty($_GET['q']) && $_GET['q']=="add_serv") {
+	$SiId			= $_POST['SiId'];
 	$ServDate   	= date("Y-m-d", strtotime($_POST['ServDate']));
 	$ServType 		= $_POST['ServType'];
 	$Executor 		= $_POST['Executor'];
 	$Description 	= $_POST['Description'];
+	// if (empty($_POST['NextDate']) && ){
+
+	// }
 	$NextDate 		= date("Y-m-d", strtotime($_POST['NextDate']));
 
 
+
 	$sql="INSERT INTO tService (`SiId`,`ServDate`,`ServType`,`Executor`,`Description`,`NextDate`)
-						VALUES ($SiId,'$ServDate','$ServType','$Executor','$Description','$NextDate')";
+						VALUES ('$SiId','$ServDate','$ServType','$Executor','$Description','$NextDate')";
 //echo $sql."\n";
 	$result = $con->query($sql);
 //echo $result;
-	$sql="select * from tService where SiId=$SiId";
+	$sql="select `S`.`id`,`S`.`ServDate`,`T`.`Name`,`S`.`Description`,`S`.`Executor`,`T`.`Period` ,`S`.`NextDate`
+			from `tService` as S
+			LEFT OUTER JOIN `tServTypes` AS T ON `S`.`ServType`=`T`.`id`
+			where `S`.`SiId`='$SiId'";
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
 			'id'=> $row['id'],
 			'ServDate'=> $row['ServDate'],
-			'ServType'=> $row['ServType'],
+			'Name'=> $row['Name'],
 			'Executor'=> $row['Executor'],
 			'Description'=> $row['Description'],
+			'Period'=> $row['Period'],
 			'NextDate'=> $row['NextDate'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-serv"  id="rm-serv-btn" value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -452,27 +437,31 @@ if($_GET['q']=="add_serv") {
 	echo  json_encode($arrVal);
 }
 
-if ($_GET['q']=='rm_serv'){
+if (!empty($_GET['q']) && $_GET['q']=='rm_serv'){
 	$id=$_POST['id'];
 	$SiId=$_POST['SiId'];
 	$sql="delete from tService where id='".$id."'";
-	$result = $con->query($sql);
 
-	$sql="select * from tService where SiId=$SiId";
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	$sql="select `S`.`id`,`S`.`ServDate`,`T`.`Name`,`S`.`Description`,`S`.`Executor`,`T`.`Period` ,`S`.`NextDate`
+			from `tService` as S
+			LEFT OUTER JOIN `tServTypes` AS T ON `S`.`ServType`=`T`.`id`
+			where `S`.`SiId`='$SiId'";
+	$result = $con->query($sql);
+	while ($row = $result->fetch()){
 
 		$name = array(
 
 			'id'=> $row['id'],
 			'ServDate'=> $row['ServDate'],
-			'ServType'=> $row['ServType'],
+			'Name'=> $row['Name'],
 			'Executor'=> $row['Executor'],
 			'Description'=> $row['Description'],
+			'Period'=> $row['Period'],
 			'NextDate'=> $row['NextDate'],
 			'Action'=>'<a class="btn btn-primary btn-xs rm-serv"  id="rm-serv-btn" value="'.$row['id'].'">Del</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -482,15 +471,16 @@ if ($_GET['q']=='rm_serv'){
 }
 
 
-//*********************************************************
+//*************************************************************************************************
+//**********************************************************
 //                      Contacts
 //**********************************************************
-if ($_GET['q']=='get_contacts'){
+if (!empty($_GET['q']) && $_GET['q']=='get_contacts'){
 	$SiId=$_GET['SiId'];
 	$sql="select * from tContacts";
 
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	while ($row = $result->fetch()){
 
 		$name = array(
 
@@ -502,7 +492,7 @@ if ($_GET['q']=='get_contacts'){
 			'Description'=> $row['Description'],
 			'Action'=>'<a class="btn btn-primary btn-xs"  href=#?SiId='.$row['SiId'].'>Delete</a>'
 			);
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -511,60 +501,33 @@ if ($_GET['q']=='get_contacts'){
 	echo  json_encode($arrVal);
 }
 //*************************************************************************************************
-
-
-//*********************************************************
+//**********************************************************
 //                      Add_SI
 //**********************************************************
-if ($_GET['q']=='add_si'){
+if (!empty($_GET['q']) && $_GET['q']=='add_si'){
 	//$SiId=$_GET['SiId'];
     $Name   	= $_POST['Name'];
     $SN   	= $_POST['SN'];
-	$sql="INSERT INTO tSI (`Name`,`SN`)
+	$sql="INSERT INTO `tSI` (`Name`,`SN`)
 						VALUES ('$Name','$SN')";
 
 	$result = $con->query($sql);
-	if ($result===true){
-        echo($Name." добавлен.");
-    }else{
+	if ($result===false){
         echo("Ошибка добавления!");
+    }else{
+        echo($Name." добавлен.");
     }
 
 }
-//*************************************************************************************************
-if ($_GET['q']=='get_missed'){
 
-//	$sql="SELECT *
-//FROM (SELECT SI.SiId,
-//        SI.Name,
-//        SI.IsMeasure,
-//        SI.SN,
-//        SI.InvNum,
-//        SI.DevCode,
-//        SI.nWorkPlace,
-//        Pl.Placement,
-//        d.Department,
-//        r.RespPerson,
-//        YEAR(SI.ManufactDate) AS ManufactDate,
-//        t.Type,
-//        s.Status,
-//        p.PovDate + INTERVAL SI.PovPeriod month AS NextPov
-//      FROM tSI AS SI
-//      LEFT OUTER JOIN tPov  as p on p.SiId=SI.SiId
-//      LEFT OUTER JOIN
-//        tResposible  AS r ON SI.RespPerson = r.id
-//        LEFT OUTER JOIN
-//        tPlacement   as Pl on SI.Placement=Pl.id
-//        LEFT OUTER JOIN
-//        tDepartments as d on SI.Department=d.id
-//        LEFT OUTER JOIN
-//        tTypes       as t    ON SI.Type=t.id
-//        LEFT OUTER JOIN
-//        tStatus      as s    ON SI.Status=s.id
-//      WHERE SI.IsMeasure='1' AND SI.Status <> '1' AND p.PovDate=(SELECT max(tPov.PovDate) FROM tPov WHERE tPov.SiId=SI.SiId )) AS pov
-//WHERE pov.NextPov <= CURDATE() + INTERVAL 2 month";
+//*************************************************************************************************
+//*********************************************************
+//                      Get_Missed
+//**********************************************************
+if (!empty($_GET['q']) && $_GET['q']=='get_missed'){
+
     $sql="SELECT *
-FROM (SELECT SI.SiId,
+		  FROM (SELECT SI.SiId,
 				SI.Name,
 				SI.IsMeasure,
 				SI.SN,
@@ -590,7 +553,8 @@ FROM (SELECT SI.SiId,
 		ORDER BY SI.SiId desc) AS Pov
         WHERE Pov.NextPov <= CURDATE() + INTERVAL 2 month";
 	$result = $con->query($sql);
-	while ($row = $result->fetch_assoc()){
+	$i=1;
+	while ($row = $result->fetch()){
 
 		$name = array(
 			'num' => $i,
@@ -609,7 +573,7 @@ FROM (SELECT SI.SiId,
 			'ManufactDate'=> $row['ManufactDate'],
 			'Action'=>'<a class="btn btn-primary btn-xs"  href=detail.php?SiId='.$row['SiId'].'>Detail</a><br><button class="btn btn-info btn-xs pov-btn" type="button" data-toggle="modal" data-target="#PovModal" id='.$row['SiId'].' siname="'.$row['Name'].'('.$row['SN'].')">Pov</button><button class="btn btn-info btn-xs srv-btn" type="button" data-toggle="modal" data-target="#SrvModal" id='.$row['SiId'].' siname="'.$row['Name'].'('.$row['SN'].')">Srv</button>'
         );
- 	 		 	 			//echo ($row[1]);
+ 	//echo ($row[1]);
 
 
 		array_push($arrVal, $name);
@@ -619,5 +583,5 @@ FROM (SELECT SI.SiId,
 }
 //**************************************************************************************
 
-$con->close();
+//$con->close();
 ?>

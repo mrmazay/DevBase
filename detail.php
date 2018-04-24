@@ -2,6 +2,12 @@
 require 'db.php';
 require 'title.php';
 
+//<!--    ***************************************************************************************  -->
+//<!--                                        Main update                                           -->
+//<!--    ***************************************************************************************  -->
+
+if (!empty($_GET['q']) && $_GET['q']=='update' && !empty($_GET['SiId'])){
+
 $SiId		 = $_POST['SiId']; //$intLat = !empty($intLat) ? "'$intLat'" : NULL;
 $Name   	 = $_POST['Name'];
 $SN 		 = $_POST['SN'];
@@ -18,40 +24,47 @@ $MeasureCode = $_POST['MeasureCode'];
 $IsMeasure   = $_POST['IsMeasure'];
 $PovPeriod   = $_POST['PovPeriod'];
 $Active      = $_POST['Active'];
-
-
-//<!--    ***************************************************************************************  -->
-//<!--                                        Main update                                           -->
-//<!--    ***************************************************************************************  -->
-
-if (($_GET['q']=='update') && (!empty($_GET['SiId']))){
 	
 $sql="UPDATE `tSI` SET
-    `Name`=        ?,
-	`SN`=          ?,
-	`InvNum`=      ?,
-	`DevCode`=     ?,
-	`nWorkPlace`=  ?,
-	`Placement`=   ?,
-	`Department`=  ?,
-	`RespPerson`=  ?,
-	`ManufactDate`=?,
-	`Type`=        ?,
-	`Status`=      ?,
-	`MeasureCode`= ?,
-    `IsMeasure`=   ?,
-    `PovPeriod`=   ?,
-    `Active`=      ?
-	WHERE SiId=    ?;";
+    `Name`=        :Name,
+	`SN`=          :SN,
+	`InvNum`=      :InvNum,
+	`DevCode`=     :DevCode,
+	`nWorkPlace`=  :nWorkPlace,
+	`Placement`=   :Placement,
+	`Department`=  :Department,
+	`RespPerson`=  :RespPerson,
+	`ManufactDate`=:ManufactDate,
+	`Type`=        :Type,
+	`Status`=      :Status,
+	`MeasureCode`= :MeasureCode,
+    `IsMeasure`=   :IsMeasure,
+    `PovPeriod`=   :PovPeriod,
+    `Active`=      :Active
+	WHERE SiId=    :SiId;";
 if ($IsMeasure && !$PovPeriod){
     $PovPeriod=12;
   echo "<script>alert('Warning! Period set to 12.')</script>";
 }
-$stmt = mysqli_prepare($con, $sql);
-$stmt->bind_param("sssssiiisiiiiiii",$Name,$SN,$InvNum,$DevCode,$nWorkPlace,$Placement,$Department,$RespPerson,$ManufactDate,$Type,$Status,$MeasureCode,$IsMeasure,$PovPeriod,$Active,$SiId);
-$result = $stmt->execute();
+$stmt = $con->prepare($sql);
+$result=$stmt->execute(array('Name'=>$Name,
+				'SN'=>$SN,
+				'InvNum'=>$InvNum,
+				'DevCode'=>$DevCode,
+				'nWorkPlace'=>$nWorkPlace,
+				'Placement'=>$Placement,
+				'Department'=>$Department,
+				'RespPerson'=>$RespPerson,
+				'ManufactDate'=>$ManufactDate,
+				'Type'=>$Type,
+				'Status'=>$Status,
+				'MeasureCode'=>$MeasureCode,
+				'IsMeasure'=>$IsMeasure,
+				'PovPeriod'=>$PovPeriod,
+				'Active'=>$Active,
+				'SiId'=>$SiId));
 if (!$result){
-    echo $sqlю."\n";
+    echo $sql."\n";
     echo $Active;
     var_dump ($result);
     echo "<script>alert('Update error! Check input data.')</script>";
@@ -66,7 +79,7 @@ WHERE SI.SiId=$SiId
 ORDER BY SI.SiId desc;";
 //	echo "stop2";
 $result =  $con->query($sql);
-while ($row = $result->fetch_assoc()) {
+while ($row = $result->fetch()) {
 
 	$Name   	 = $row['Name'];
 	$SN 		 = $row['SN'];
@@ -85,7 +98,6 @@ while ($row = $result->fetch_assoc()) {
     $Active      = $row['Active'];
 }
 ?>
-
 
 <div class="container-fluid">
 	<div class="col-md-12">
@@ -106,12 +118,12 @@ while ($row = $result->fetch_assoc()) {
 						<div class="panel-body">
 							<!-- *************************************************************** -->
 
-							<form class="form-horizontal" role="form" method="POST" action="detail.php?SiId=<?php echo $SiId?>&q=update">
+							<form class="form-horizontal" role="form" method="POST" action="detail.php?SiId=<?php echo $SiId;?>&q=update">
 
 								<div class="form-group">
 									<label for="SiId" class="col-lg-2 control-label">SiId</label>
 									<div class="col-lg-10">
-										<input type="Text" class="form-control" name="SiId" id="SiId" placeholder=<?php echo $SiId?> value="<?php echo $SiId;?>">
+										<input type="Text" class="form-control" name="SiId" id="SiId" placeholder=<?php echo $SiId;?> value="<?php echo $SiId;?>">
 									</div>
 								</div>
 								<div class="form-group">
@@ -134,7 +146,7 @@ while ($row = $result->fetch_assoc()) {
 											<?php
 											$sql="select * from tResposible order by id asc";
 											$result = $con->query($sql);
-											while ($row = $result->fetch_assoc()) { 
+											while ($row = $result->fetch()) {
 												if ($RespPerson!=$row['id']){	 
 													echo "<option value =".$row['id'].">".$row['RespPerson']."</option>";
 												}else{
@@ -154,7 +166,7 @@ while ($row = $result->fetch_assoc()) {
 											<?php
 											$sql="select * from tPlacement order by id asc";
 											$result = $con->query($sql);
-											while ($row = $result->fetch_assoc()) {  
+											while ($row = $result->fetch()) {
 												if ($Placement!=$row['id']){	
 													echo "<option value =".$row['id'].">".$row['Placement']."</option>";
 												}else{
@@ -168,6 +180,12 @@ while ($row = $result->fetch_assoc()) {
 									</div>
 								</div>
 								<div class="form-group">
+									<label for="nWorkPlace" class="col-lg-2 control-label">Раб. место №</label>
+									<div class="col-lg-10">
+										<input type="Text" class="form-control" name="nWorkPlace" id="nWorkPlace" placeholder="WorkPlace" value="<?php echo $nWorkPlace;?>">
+									</div>
+								</div>
+								<div class="form-group">
 									<label for="Department" class="col-lg-2 control-label">Подразделение</label>
 									<div class="col-lg-10">
 										<select name="Department" type="Department" class="form-control" id="Department">
@@ -176,7 +194,7 @@ while ($row = $result->fetch_assoc()) {
 											$sql="select * from tDepartments order by id asc";
 											$result = $con->query($sql);
 
-											while ($row = $result->fetch_assoc()) {  
+											while ($row = $result->fetch()) {
 												if ($Department!=$row['id']){
 													echo "<option value =".$row['id'].">".$row['department']."</option>";
 												}else{
@@ -198,7 +216,7 @@ while ($row = $result->fetch_assoc()) {
 
 											$sql="select * from tTypes order by id asc";
 											$result = $con->query($sql);
-											while ($row = $result->fetch_assoc()) {  
+											while ($row = $result->fetch()) {
 												if ($Type!=$row['id']){
 
 													echo "<option value =".$row['id'].">".$row['Type']."</option>";
@@ -257,7 +275,7 @@ while ($row = $result->fetch_assoc()) {
 											<?php
 											$sql="select * from tStatus order by id asc";
 											$result = $con->query($sql);
-											while ($row = $result->fetch_assoc()) { 
+											while ($row = $result->fetch()) {
 												if ($Status!=$row['id']){ 
 													echo "<option value =".$row['id'].">".$row['Status']."</option>";
 
@@ -273,7 +291,7 @@ while ($row = $result->fetch_assoc()) {
 								<div class="form-group">
 									<label for="ManufactDate" class="col-lg-2 control-label">Дата изготовления</label>
 									<div class="col-lg-10">
-										<input type="date/month/week/time" class="form-control" name="ManufactDate" id="ManufactDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01" value="<?php echo $ManufactDate;?>">
+										<input type="date" class="form-control" name="ManufactDate" id="ManufactDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01" value="<?php echo $ManufactDate;?>">
 									</div>
 								</div>
 								<div class="form-group">
@@ -310,7 +328,7 @@ while ($row = $result->fetch_assoc()) {
 											<?php
 											$sql="select * from tMeasureCodes order by id asc";
 											$result = $con->query($sql);
-											while ($row = $result->fetch_assoc()) {  
+											while ($row = $result->fetch()) {
 												if ($MeasureCode!=$row['id']){	
 													echo "<option value =".$row['id'].">".htmlspecialchars($row['Name'])."</option>";
 												}else{
@@ -369,7 +387,7 @@ while ($row = $result->fetch_assoc()) {
 						</div><!-- panel-heading -->
 						<div class="panel-body">
 							<form class="form-horizontal" role="form" id="pkg_frm"  method="POST" >
-						<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
+						<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo $SiId; ?>">
 						<div class="form-group">
 							<label for="Name" class="col-lg-2 control-label">Название</label>
 							<div class="col-lg-7">
@@ -387,6 +405,7 @@ while ($row = $result->fetch_assoc()) {
 								<select name="units" type="units" class="form-control" id="units">
 									<option>шт.</option>
 									<option>экз.</option>
+                                    <option>пар</option>
 								</select>
 							</div>
 						</div>
@@ -403,7 +422,7 @@ while ($row = $result->fetch_assoc()) {
 					<div class="table-responsive">
 						<table id="pkg_tbl" 
 						class="table table-striped table-bordered table-condensed" 
-						data-url="get_main.php?q=get_pkg&SiId=<?php echo $SiId?>"
+						data-url="get_main.php?q=get_pkg&SiId=<?php echo $SiId;?>"
 						data-method="POST"  
 						data-height="200" 
 						
@@ -434,7 +453,7 @@ while ($row = $result->fetch_assoc()) {
 						</div><!-- panel-heading -->
 						<div class="panel-body">
 							<form class="form-horizontal" role="form" id="char_frm"  method="POST" >
-					<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
+					<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo $SiId; ?>">
 					<div class="form-group">
 						<label for="Character" class="col-lg-2 control-label">Название</label>
 						<div class="col-lg-7">
@@ -463,7 +482,7 @@ while ($row = $result->fetch_assoc()) {
 				<div class="table-responsive">
 					<table id="char_tbl" 
 					class="table table-striped table-bordered table-condensed" 
-					data-url="get_main.php?q=get_char&SiId=<?php echo $SiId?>"
+					data-url="get_main.php?q=get_char&SiId=<?php echo $SiId;?>"
 					data-method="POST"  
 					data-height="200" 
 					data-show-refresh="true" 
@@ -494,11 +513,11 @@ while ($row = $result->fetch_assoc()) {
 						</div><!-- panel-heading -->
 						<div class="panel-body">
 					<form enctype="multipart/form-data" class="form-horizontal" role="form" id="pov_frm"  method="POST" action="get_main.php?q=add_pov" >
-				<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
+				<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo $SiId; ?>">
 				<div class="form-group">
 					<label for="PovDate" class="col-lg-2 control-label">Дата</label>
 					<div class="col-lg-2">
-						<input type="Text" class="form-control" name="PovDate" id="PovDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
+						<input type="date" class="form-control" name="PovDate" id="PovDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 					</div>
 					<div class="col-lg-2">
 					</div>
@@ -530,7 +549,7 @@ while ($row = $result->fetch_assoc()) {
 				<table 
 				id="pov_tbl" 
 				class="table table-striped table-bordered table-condensed" 
-				data-url="get_main.php?q=get_pov&SiId=<?php echo $SiId?>"
+				data-url="get_main.php?q=get_pov&SiId=<?php echo $SiId;?>"
 				data-method="POST"  
 				data-height="200" 
 				data-show-refresh="true" 
@@ -558,11 +577,11 @@ while ($row = $result->fetch_assoc()) {
 						</div><!-- panel-heading -->
 						<div class="panel-body">
 						<form class="form-horizontal" role="form" id="serv_frm"  method="POST" >
-			<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo "'".$SiId."'"; ?>">
+			<input type="hidden" class="form-control" name="SiId" id="SiId" value="<?php echo $SiId; ?>">
 			<div class="form-group">
 				<label for="SiId" class="col-lg-2 control-label">Дата</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="ServDate" id="ServDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
+					<input type="date" class="form-control" name="ServDate" id="ServDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 				</div>
 				<div class="col-lg-2">
 				</div>
@@ -570,7 +589,16 @@ while ($row = $result->fetch_assoc()) {
 			<div class="form-group">
 				<label for="ServType" class="col-lg-2 control-label">Вид</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="ServType" id="ServType" placeholder="ServType">
+					<select name="ServType" type="ServType" class="form-control" id="ServType">
+<!--											<option value="">---</option>-->
+											<?php
+											$sql="select * from tServTypes order by id asc";
+											$result = $con->query($sql);
+											while ($row = $result->fetch()) {
+												echo "<option period=".$row['Period']."  value =".$row['id'].">".$row['Name']." (".$row['Period']."мес.)</option>";
+											}
+											?>
+										</select>
 				</div>
 				<div class="col-lg-2">
 
@@ -579,24 +607,9 @@ while ($row = $result->fetch_assoc()) {
             <div class="form-group">
 				<label for="Description" class="col-lg-2 control-label">Описание</label>
 				<div class="col-lg-10">
-<!--
-				<div class="select-editable">
-            <select onchange="this.nextElementSibling.value=this.value">
---><input list="Descriptions" name="Description">
-                    <datalist id="Desccriptions">
-                <option value="Чистка. Проверка тех. сост.">
-                <option value="Метрологическая аттестация">
-                <option value="Чистка. Калибровка.">
-                <option value="Квалификация">
-                    </datalist>
-<!--
-            </select>
-            <input type="Text" class="form-control" name="Description" id="Description" placeholder="Description" value="Чистка. Проверка тех. сост.">
--->
-<!--                </div>-->
+				<input type="Text" class="form-control" name="Description" id="Description" placeholder="Description">
 				</div>
 				<div class="col-lg-2">
-
 				</div>
 			</div>
 			<div class="form-group">
@@ -609,7 +622,7 @@ while ($row = $result->fetch_assoc()) {
 			<div class="form-group">
 				<label for="NextDate" class="col-lg-2 control-label">Дата следующего</label>
 				<div class="col-lg-10">
-					<input type="Text" class="form-control" name="NextDate" id="NextDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
+					<input type="date" class="form-control" name="NextDate" id="NextDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 				</div>
 				
 			</div>
@@ -624,7 +637,7 @@ while ($row = $result->fetch_assoc()) {
 			<table 
 			id="serv_tbl" 
 			class="table table-striped table-bordered table-condensed" 
-			data-url="get_main.php?q=get_serv&SiId=<?php echo $SiId?>"
+			data-url="get_main.php?q=get_serv&SiId=<?php echo $SiId;?>"
 			data-method="POST"  
 			data-height="200" 
 			data-show-refresh="true" 
@@ -632,8 +645,9 @@ while ($row = $result->fetch_assoc()) {
 			<thead>
 				<th data-field="id" data-sortable="true"> id</th>
 				<th data-field="ServDate" data-sortable="true">Дата</th>
-				<th data-field="ServType" data-sortable="true">Вид</th>
+				<th data-field="Name" data-sortable="true">Вид</th>
 				<th data-field="Description" data-sortable="true">Описание</th>
+				<th data-field="Period" data-sortable="true">Период</th>
 				<th data-field="Executor" data-sortable="true">Выполнил</th>
 				<th data-field="NextDate" data-sortable="true">Дата след.</th>
 				<th data-field="Action">Action</th>

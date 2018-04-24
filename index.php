@@ -26,8 +26,19 @@ require 'title.php';
 
 				<div class="row">
 					<div class="col-md-12">
-					<input type="checkbox" name="missed" id="missed">На поверку
 
+        <div class="checkbox checkbox-primary">
+                        <input id="missed" type="checkbox" checked="">
+                        <label for="missed">
+                            На поверку
+                        </label>
+                    </div>
+                    <div class="checkbox checkbox-primary">
+                        <input id="in_operation" type="checkbox" checked="">
+                        <label for="in_operation">
+                            В эксплуатации
+                        </label>
+                    </div>
 						<table id="table"
 						class="table table-striped table-bordered table-condensed"
 						data-url="get_main.php?q=get_main"
@@ -46,12 +57,13 @@ require 'title.php';
 							<th data-sortable="true" data-field="IsMeasure">Is<br>Measure</th>
 							<th data-sortable="true" data-field="NextPov">NextPov</th>
 							<th data-sortable="true" data-field="DevCode">DevCode</th>
-							<th data-sortable="true" data-field="nWorkPlace">nWorkPlace</th>
+							 <th data-sortable="true" data-field="nWorkPlace">nWorkPlace</th>
 							<th data-sortable="true" data-field="Placement">Placement</th>
 							<th data-sortable="true" data-field="Department">Department</th>
 							<th data-sortable="true" data-field="RespPerson">RespPerson</th>
 							<th data-sortable="true" data-field="Type">Type</th>
 							<th data-sortable="true" data-field="Status">Status</th>
+							<th data-sortable="true" data-field="MeasureCode">MeasureCode</th>
 							<th data-sortable="true" data-field="ManufactDate">Manufact<br>Date</th>
 							<th data-field="Action">Action</th>
 						</thead>
@@ -122,7 +134,6 @@ require 'title.php';
 				id="pov_tbl"
 				class="table table-striped table-bordered table-condensed"
 				data-method="POST"
-				data-height="200"
 				data-show-refresh="true"
 				data-mobile-responsive="true" >
 				<thead>
@@ -159,10 +170,9 @@ require 'title.php';
 <h4 class="modal-title">Обслуживание</h4>
 </div>
 <div class="modal-body">
-
 <div class="panel  panel-primary" id="srv-panel">
 						<div class="panel-heading "> 
-							<span class="" id="srv_tbl_title">Обслуживание</span>
+						<span class="" id="srv_tbl_title">Обслуживание</span>
 						</div><!-- panel-heading -->
 						<div class="panel-body">
 						<form class="form-horizontal" role="form" id="srv_frm"  method="POST" >
@@ -181,7 +191,6 @@ require 'title.php';
 					<input type="Text" class="form-control" name="ServType" id="ServType" placeholder="ServType" value="0">
 				</div>
 				<div class="col-lg-2">
-
 				</div>
 			</div>
 			<div class="form-group">
@@ -190,7 +199,6 @@ require 'title.php';
 					<input type="Text" class="form-control" name="Description" id="Description" placeholder="Description">
 				</div>
 				<div class="col-lg-2">
-
 				</div>
 			</div>
 			<div class="form-group">
@@ -198,14 +206,12 @@ require 'title.php';
 				<div class="col-lg-10">
 					<input type="Text" class="form-control" name="Executor" id="Executor" placeholder="А.А. Леонов" value="А.А. Леонов">
 				</div>
-				
 			</div>
 			<div class="form-group">
 				<label for="NextDate" class="col-lg-2 control-label">Дата следующего</label>
 				<div class="col-lg-10">
 					<input type="Text" class="form-control" name="NextDate" id="NextDate" pattern="\d{4}-\d{2}-\d{2}" placeholder="2014-01-01">
 				</div>
-				
 			</div>
 		</form>
 <!--		<div class="form-group">-->
@@ -213,13 +219,11 @@ require 'title.php';
 				<button  id="add_srv" class="btn btn-primary">Добавить</button>
 			</div>
 <!--		</div>-->
-		
 		<div class="table-responsive">
 			<table 
 			id="srv_tbl"
 			class="table table-striped table-bordered table-condensed"
 				data-method="POST"
-				data-height="200"
 				data-show-refresh="true"
 				data-mobile-responsive="true" >
 			<thead>
@@ -233,14 +237,12 @@ require 'title.php';
 			</thead>
 			
 		</table>
-	</div>
+		</div>
 
 
-						</div><!-- panel body -->
-					</div><!-- panel -->
-    
-    
-    </div><!-- modal-body -->
+	</div><!-- panel body -->
+ </div><!-- panel -->
+</div><!-- modal-body -->
 <div class="modal-footer">
 <button class="btn btn-default" type="button" data-dismiss="modal">Закрыть</button>
 </div><!-- modal-footer -->
@@ -310,36 +312,24 @@ require 'title.php';
 </div><!-- Col-md-12 -->
 		</div><!-- Container-fluid -->
 
+
 <!--
-		<script type="text/javascript">
-		  $(document).ready(function () {
-
-		$('#count').text($rowCount+' записей.');
-		$('#table').DataTable( {
-		        dom: 'Bfrtip',
-		        buttons: [
-		            'print'
-		        ]
-		    } );
-		  });
-		</script>
+//******************************************************
+//                          SCRIPTS
+//******************************************************
 -->
-
-
-
 <script type="text/javascript">
 $(document).ready(function(){
 $("#pov_tbl").bootstrapTable({});
 $("#srv_tbl").bootstrapTable({});
 
 //*************************************
-//               Row COunts
+//               Row Counts
 //*************************************
 
     $('#table').bootstrapTable({
     onLoadSuccess: function (e,data) {
         var $rowCount=$('#table').bootstrapTable('getData').length;
-
         $('#count').text($rowCount+' записей.');
     },
     onPostBody: function () {
@@ -347,47 +337,32 @@ $("#srv_tbl").bootstrapTable({});
          $('#count').text($rowCount+' записей.');
     }
 });
-$('#table').on('all.bs.table', (e, name, args) => {
-        console.log(name, args);
-    });
 
 //*************************************
 //     Modal Add & Remove Calibration
 //*************************************
 $("#table").on('click','.pov-btn',function(e){
-//		var $id = $(this).attr('value');
-        var $SiId=$(this ).attr('id');
+var $SiId=$(this ).attr('id');
     $("#SiId").val($SiId);
     $("#pov_tbl_title").text($(this).attr('siname'));
 		$.post( "get_main.php?q=get_pov&SiId="+$SiId, {SiId: $SiId})
 		.done(function( data ) {
-
 			var $table = $('#pov_tbl');
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
 	});
-//
-//    $("#add_pov").click(function(e){
-//		$.post( "get_main.php?q=add_pov", $( "#pov_frm" ).serialize())
-//		.done(function( data ) {
-//
-//			var $table = $('#pov_tbl');
-//			$table.bootstrapTable('load',JSON.parse(data));
-//		});
-//	});
 
     $("#pov_frm").submit(function(e){
     e.preventDefault();
    var formData = new FormData($(this).get(0));
-     $.ajax({
-	                url: 'get_main.php?q=add_pov',
+     $.ajax({       url: 'get_main.php?q=add_pov',
 	                dataType: 'text',
 	                cache: false,
 	                contentType: false,
                     processData: false,
 	                data: formData,
 	                type: 'post',
-	                success: function( data ) {
+	        success: function( data ) {
 			var $table = $('#pov_tbl');
 			$table.bootstrapTable('load',JSON.parse(data));
 		}
@@ -401,14 +376,10 @@ $("#table").on('click','.pov-btn',function(e){
         var $fname=$(this).attr('data-fname');
 		$.post( "get_main.php?q=rm_pov", {id: $id , SiId: $SiId , fname: $fname })
 		.done(function( data ) {
-
 			var $table = $('#pov_tbl');
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
 	});
-
-
-
 //*************************************
 //     Modal Add & Remove Service
 //*************************************
@@ -428,90 +399,53 @@ $("#table").on('click','.srv-btn',function(e){
     $("#add_srv").click(function(e){
 		$.post( "get_main.php?q=add_serv", $( "#srv_frm" ).serialize())
 		.done(function( data ) {
+			var $table = $('#srv_tbl');
+			$table.bootstrapTable('load',JSON.parse(data));
+		});
+	});
+ $("#srv_tbl").on('click','.rm-serv',function(e){
+		var $id = $(this).attr('value');
+        var $SiId=$( '#SiId' ).attr('value');
+        var $fname=$(this).attr('data-fname');
+		$.post( "get_main.php?q=rm_serv", {id: $id , SiId: $SiId , fname: $fname })
+		.done(function( data ) {
 
 			var $table = $('#srv_tbl');
 			$table.bootstrapTable('load',JSON.parse(data));
 		});
 	});
-
 //*************************************
 //     Modal Add SI
 //*************************************
     $("#add_si_btn").click(function(e){
 		$.post( "get_main.php?q=add_si", $( "#add_si_frm" ).serialize())
 		.done(function( data ) {
-
 			alert(data);
+			$('#table').bootstrapTable('refresh');
 		});
 	});
-
-
-//***********************Missed CLick****************************************************
+//*************************************
+//     Missed click
+//*************************************
     $("#missed").change(function(){
 		if ($('#missed').prop('checked')) {
 		$.post( "get_main.php?q=get_missed")
 		.done(function( data ) {
 			var $table = $('#table');
 			$table.bootstrapTable('load',JSON.parse(data));
-
-	//	return true;
 		});
-
 		}else{
 		$.post( "get_main.php?q=get_main")
 		.done(function( data ) {
 			var $table = $('#table');
 			$table.bootstrapTable('load',JSON.parse(data));
-
-	//	return false;
 	});
         }
- //       var $rowCount=$('#table').bootstrapTable('getData').length;
-   //      $('#count').text($rowCount+' записей.');
 	});
-
-
-
-
-
-
 });
-
-
 </script>
-
-<!--
-<nav class="context-menu">
-  <ul class="context-menu__items">
-    <li class="context-menu__item">
-      <a href="#" class="context-menu__link">
-        <i class="fa fa-eye"></i> View Task
-      </a>
-    </li>
-    <li class="context-menu__item">
-      <a href="#" class="context-menu__link">
-        <i class="fa fa-edit"></i> Edit Task
-      </a>
-    </li>
-    <li class="context-menu__item">
-      <a href="#" class="context-menu__link">
-        <i class="fa fa-times"></i> Delete Task
-      </a>
-    </li>
-  </ul>
-</nav>
-<script>
-   (function() {
-
-  "use strict";
-
-  document.addEventListener( "contextmenu", function(e) {
-    console.log(e);
-  });
-
-})();
-</script>
--->
-
-	</body>
-	</html>
+<center>
+Powered by grandmother knitted 2017-2018
+</center>
+</body>
+</html>

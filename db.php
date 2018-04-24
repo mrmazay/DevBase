@@ -1,14 +1,12 @@
 <?php
-session_start();
-$_SESSION['user']='qweqwe';
-$user="mysql";
-$pass="mysql";
-$database="DevBase";
-$con = new mysqli('192.168.220.119', $user, $pass,'DevBase');
-if (mysqli_connect_errno()) {
-   printf("Подключение к серверу MySQL невозможно. Код ошибки: %s\n", mysqli_connect_error());
-   exit;
-} 
-//mysql_select_db($database) or die('Не удалось выбрать базу данных');
+//session_start();
+//$_SESSION['user']='qweqwe';
+ini_set("always_populate_raw_post_data","1");
+$user="devbase";
+$pass="1465714";
+$database="devbase";
+$host="192.168.220.101";
+$con = new PDO("mysql:dbname=$database;host=$host", $user, $pass);
+$con->query("SET NAMES 'utf8'");
 
 ?>
