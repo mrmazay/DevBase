@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: localhost:3306
--- Время создания: Фев 15 2021 г., 09:45
+-- Время создания: Фев 15 2021 г., 10:32
 -- Версия сервера: 10.1.38-MariaDB-0+deb9u1
 -- Версия PHP: 7.2.31-1+0~20200514.41+debian9~1.gbpe2a56b
 
@@ -19,11 +19,14 @@ SET time_zone = "+00:00";
 --
 -- База данных: `devbase`
 --
+CREATE DATABASE IF NOT EXISTS `devbase` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `devbase`;
 
 DELIMITER $$
 --
 -- Процедуры
 --
+DROP PROCEDURE IF EXISTS `load_foo_test_data`$$
 CREATE DEFINER=`devbase`@`%` PROCEDURE `load_foo_test_data` ()  begin
 DECLARE i int unsigned default 5;
 SET i=500;
@@ -41,6 +44,7 @@ DELIMITER ;
 -- Структура таблицы `auth_assignment`
 --
 
+DROP TABLE IF EXISTS `auth_assignment`;
 CREATE TABLE IF NOT EXISTS `auth_assignment` (
   `item_name` varchar(64) NOT NULL,
   `user_id` varchar(64) NOT NULL,
@@ -68,6 +72,7 @@ INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 -- Структура таблицы `auth_item`
 --
 
+DROP TABLE IF EXISTS `auth_item`;
 CREATE TABLE IF NOT EXISTS `auth_item` (
   `name` varchar(64) NOT NULL,
   `type` smallint(6) NOT NULL,
@@ -100,6 +105,7 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 -- Структура таблицы `auth_item_child`
 --
 
+DROP TABLE IF EXISTS `auth_item_child`;
 CREATE TABLE IF NOT EXISTS `auth_item_child` (
   `parent` varchar(64) NOT NULL,
   `child` varchar(64) NOT NULL,
@@ -125,6 +131,7 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 -- Структура таблицы `auth_rule`
 --
 
+DROP TABLE IF EXISTS `auth_rule`;
 CREATE TABLE IF NOT EXISTS `auth_rule` (
   `name` varchar(64) NOT NULL,
   `data` blob,
@@ -144,6 +151,7 @@ TRUNCATE TABLE `auth_rule`;
 -- Структура таблицы `tActionLog`
 --
 
+DROP TABLE IF EXISTS `tActionLog`;
 CREATE TABLE IF NOT EXISTS `tActionLog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) NOT NULL,
@@ -184,6 +192,7 @@ INSERT INTO `tActionLog` (`id`, `SiId`, `ip`, `UserId`, `Description`, `CrTime`)
 -- Структура таблицы `tAttachment`
 --
 
+DROP TABLE IF EXISTS `tAttachment`;
 CREATE TABLE IF NOT EXISTS `tAttachment` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) NOT NULL,
@@ -268,6 +277,7 @@ INSERT INTO `tAttachment` (`id`, `SiId`, `Name`, `File`, `Description`, `CrTime`
 -- Структура таблицы `tCharacter`
 --
 
+DROP TABLE IF EXISTS `tCharacter`;
 CREATE TABLE IF NOT EXISTS `tCharacter` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) NOT NULL,
@@ -2697,6 +2707,7 @@ INSERT INTO `tCharacter` (`id`, `SiId`, `Charact`, `Value`, `CrTime`) VALUES
 -- Структура таблицы `tContacts`
 --
 
+DROP TABLE IF EXISTS `tContacts`;
 CREATE TABLE IF NOT EXISTS `tContacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `SiId` int(11) DEFAULT NULL COMMENT 'SiId',
@@ -2729,6 +2740,7 @@ INSERT INTO `tContacts` (`id`, `SiId`, `Name`, `Org`, `Addr`, `Phone`, `Phone2`,
 -- Структура таблицы `tDepartments`
 --
 
+DROP TABLE IF EXISTS `tDepartments`;
 CREATE TABLE IF NOT EXISTS `tDepartments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `department` varchar(255) NOT NULL,
@@ -2761,6 +2773,7 @@ INSERT INTO `tDepartments` (`id`, `department`) VALUES
 -- Структура таблицы `tFiles`
 --
 
+DROP TABLE IF EXISTS `tFiles`;
 CREATE TABLE IF NOT EXISTS `tFiles` (
   `id` int(11) DEFAULT NULL,
   `SiId` int(11) DEFAULT NULL,
@@ -2782,6 +2795,7 @@ TRUNCATE TABLE `tFiles`;
 -- Структура таблицы `tManufacturers`
 --
 
+DROP TABLE IF EXISTS `tManufacturers`;
 CREATE TABLE IF NOT EXISTS `tManufacturers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
@@ -2801,6 +2815,7 @@ TRUNCATE TABLE `tManufacturers`;
 -- Структура таблицы `tMeasureCodes`
 --
 
+DROP TABLE IF EXISTS `tMeasureCodes`;
 CREATE TABLE IF NOT EXISTS `tMeasureCodes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) NOT NULL,
@@ -2837,6 +2852,7 @@ INSERT INTO `tMeasureCodes` (`id`, `Name`) VALUES
 -- Структура таблицы `tOrg`
 --
 
+DROP TABLE IF EXISTS `tOrg`;
 CREATE TABLE IF NOT EXISTS `tOrg` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `Name` varchar(255) NOT NULL COMMENT 'Наименование',
@@ -2868,6 +2884,7 @@ INSERT INTO `tOrg` (`id`, `Name`, `Address`, `Edrpo`, `Phone`, `Delivery`, `Comm
 -- Структура таблицы `tPackage`
 --
 
+DROP TABLE IF EXISTS `tPackage`;
 CREATE TABLE IF NOT EXISTS `tPackage` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) NOT NULL,
@@ -4633,6 +4650,7 @@ INSERT INTO `tPackage` (`id`, `SiId`, `Name`, `SN`, `Count`, `CrTime`) VALUES
 -- Структура таблицы `tParts`
 --
 
+DROP TABLE IF EXISTS `tParts`;
 CREATE TABLE IF NOT EXISTS `tParts` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
   `Name` varchar(255) NOT NULL COMMENT 'Наименование',
@@ -4667,6 +4685,7 @@ INSERT INTO `tParts` (`id`, `Name`, `Description`, `Count`, `Price`, `OrgId`, `C
 -- Структура таблицы `tPlacement`
 --
 
+DROP TABLE IF EXISTS `tPlacement`;
 CREATE TABLE IF NOT EXISTS `tPlacement` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Placement` varchar(255) NOT NULL,
@@ -4751,6 +4770,7 @@ INSERT INTO `tPlacement` (`id`, `Placement`) VALUES
 -- Структура таблицы `tPov`
 --
 
+DROP TABLE IF EXISTS `tPov`;
 CREATE TABLE IF NOT EXISTS `tPov` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) NOT NULL,
@@ -6091,6 +6111,7 @@ INSERT INTO `tPov` (`id`, `SiId`, `PovDate`, `Doc`, `File`, `CrTime`) VALUES
 -- Структура таблицы `tPovPrice`
 --
 
+DROP TABLE IF EXISTS `tPovPrice`;
 CREATE TABLE IF NOT EXISTS `tPovPrice` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiType` varchar(255) NOT NULL,
@@ -6149,6 +6170,7 @@ INSERT INTO `tPovPrice` (`id`, `SiType`, `Price`) VALUES
 -- Структура таблицы `tResposible`
 --
 
+DROP TABLE IF EXISTS `tResposible`;
 CREATE TABLE IF NOT EXISTS `tResposible` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `RespPerson` varchar(255) NOT NULL,
@@ -6238,6 +6260,7 @@ INSERT INTO `tResposible` (`id`, `RespPerson`) VALUES
 -- Структура таблицы `tService`
 --
 
+DROP TABLE IF EXISTS `tService`;
 CREATE TABLE IF NOT EXISTS `tService` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) DEFAULT NULL,
@@ -7357,6 +7380,7 @@ INSERT INTO `tService` (`id`, `SiId`, `ServDate`, `ServType`, `Executor`, `Descr
 -- Структура таблицы `tServTypes`
 --
 
+DROP TABLE IF EXISTS `tServTypes`;
 CREATE TABLE IF NOT EXISTS `tServTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) NOT NULL DEFAULT '0',
@@ -7404,6 +7428,7 @@ INSERT INTO `tServTypes` (`id`, `SiId`, `Name`, `Period`, `CrTime`, `ModTime`) V
 -- Структура таблицы `tSession`
 --
 
+DROP TABLE IF EXISTS `tSession`;
 CREATE TABLE IF NOT EXISTS `tSession` (
   `id_user` int(5) NOT NULL,
   `code_sess` varchar(15) NOT NULL,
@@ -7421,6 +7446,7 @@ TRUNCATE TABLE `tSession`;
 -- Структура таблицы `tSI`
 --
 
+DROP TABLE IF EXISTS `tSI`;
 CREATE TABLE IF NOT EXISTS `tSI` (
   `SiId` int(11) NOT NULL AUTO_INCREMENT,
   `Name` varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -8094,6 +8120,7 @@ INSERT INTO `tSI` (`SiId`, `Name`, `SN`, `RespPerson`, `Department`, `Placement`
 --
 -- Триггеры `tSI`
 --
+DROP TRIGGER IF EXISTS `CrTime`;
 DELIMITER $$
 CREATE TRIGGER `CrTime` BEFORE INSERT ON `tSI` FOR EACH ROW SET NEW.CrTime=CURRENT_TIMESTAMP()
 $$
@@ -8105,6 +8132,7 @@ DELIMITER ;
 -- Структура таблицы `tSiParts`
 --
 
+DROP TABLE IF EXISTS `tSiParts`;
 CREATE TABLE IF NOT EXISTS `tSiParts` (
   `SiId` int(11) NOT NULL,
   `PartId` int(11) NOT NULL,
@@ -8131,6 +8159,7 @@ INSERT INTO `tSiParts` (`SiId`, `PartId`) VALUES
 -- Структура таблицы `tSi_ServTypes`
 --
 
+DROP TABLE IF EXISTS `tSi_ServTypes`;
 CREATE TABLE IF NOT EXISTS `tSi_ServTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `DevId` int(11) NOT NULL,
@@ -8654,6 +8683,7 @@ INSERT INTO `tSi_ServTypes` (`id`, `DevId`, `ServTypeId`, `Period`) VALUES
 -- Структура таблицы `tStatus`
 --
 
+DROP TABLE IF EXISTS `tStatus`;
 CREATE TABLE IF NOT EXISTS `tStatus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Status` varchar(255) NOT NULL,
@@ -8682,6 +8712,7 @@ INSERT INTO `tStatus` (`id`, `Status`) VALUES
 -- Структура таблицы `tTypes`
 --
 
+DROP TABLE IF EXISTS `tTypes`;
 CREATE TABLE IF NOT EXISTS `tTypes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Type` varchar(255) DEFAULT NULL,
@@ -8708,6 +8739,7 @@ INSERT INTO `tTypes` (`id`, `Type`) VALUES
 -- Структура таблицы `tUserGroups`
 --
 
+DROP TABLE IF EXISTS `tUserGroups`;
 CREATE TABLE IF NOT EXISTS `tUserGroups` (
   `id` int(11) NOT NULL,
   `Name` int(11) NOT NULL,
@@ -8725,6 +8757,7 @@ TRUNCATE TABLE `tUserGroups`;
 -- Структура таблицы `tUsers`
 --
 
+DROP TABLE IF EXISTS `tUsers`;
 CREATE TABLE IF NOT EXISTS `tUsers` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(50) NOT NULL,
@@ -8757,6 +8790,7 @@ INSERT INTO `tUsers` (`id`, `login`, `password`, `UserGroup`, `hash`, `Active`, 
 -- Структура таблицы `tWorkLog`
 --
 
+DROP TABLE IF EXISTS `tWorkLog`;
 CREATE TABLE IF NOT EXISTS `tWorkLog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `SiId` int(11) DEFAULT NULL,
@@ -8790,6 +8824,7 @@ INSERT INTO `tWorkLog` (`id`, `SiId`, `Name`, `Description`, `crTime`, `IP`) VAL
 -- Структура таблицы `tWorkPlaces`
 --
 
+DROP TABLE IF EXISTS `tWorkPlaces`;
 CREATE TABLE IF NOT EXISTS `tWorkPlaces` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `Workplace` int(11) NOT NULL,
@@ -8807,6 +8842,7 @@ TRUNCATE TABLE `tWorkPlaces`;
 -- Дублирующая структура для представления `vCard`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `vCard`;
 CREATE TABLE IF NOT EXISTS `vCard` (
 `SiId` int(11)
 ,`IsMeasure` tinyint(1)
@@ -8830,6 +8866,7 @@ CREATE TABLE IF NOT EXISTS `vCard` (
 -- Дублирующая структура для представления `vMain`
 -- (See below for the actual view)
 --
+DROP VIEW IF EXISTS `vMain`;
 CREATE TABLE IF NOT EXISTS `vMain` (
 `SiId` int(11)
 ,`Name` varchar(255)
